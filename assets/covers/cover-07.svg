@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" fill="#080815"/>
+  <!-- sol nascente -->
+  <circle cx="32" cy="26" r="11" fill="#00eeff" opacity="0.85"/>
+  <!-- montanhas ao fundo -->
+  <path d="M0 44 L14 32 L26 42 L40 30 L54 42 L64 36 V64 H0 Z" fill="#0a4a44"/>
+  <!-- portal torii pixelado -->
+  <g fill="#0f776e">
+    <rect x="16" y="14" width="32" height="4"/>
+    <rect x="12" y="16" width="4" height="3"/>
+    <rect x="48" y="16" width="4" height="3"/>
+    <rect x="20" y="22" width="24" height="3"/>
+    <rect x="21" y="18" width="4" height="34"/>
+    <rect x="39" y="18" width="4" height="34"/>
+  </g>
+  <!-- reflexo na água -->
+  <rect x="0" y="52" width="64" height="12" fill="#050510"/>
+  <rect x="21" y="54" width="4" height="6" fill="#0f776e" opacity="0.4"/>
+  <rect x="39" y="54" width="4" height="6" fill="#0f776e" opacity="0.4"/>
+  <rect x="26" y="55" width="12" height="2" fill="#00eeff" opacity="0.35"/>
+  <!-- pétalas -->
+  <rect x="10" y="8" width="2" height="2" fill="#f2f2f2" opacity="0.7"/>
+  <rect x="54" y="10" width="2" height="2" fill="#f2f2f2" opacity="0.7"/>
+  <rect x="50" y="28" width="2" height="2" fill="#f2f2f2" opacity="0.5"/>
+  <rect x="8" y="34" width="2" height="2" fill="#f2f2f2" opacity="0.5"/>
+</svg>

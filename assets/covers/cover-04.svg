@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" fill="#080815"/>
+  <!-- coração pixelado (Undertale) -->
+  <g fill="#ff3b4d">
+    <rect x="20" y="20" width="8" height="4"/>
+    <rect x="36" y="20" width="8" height="4"/>
+    <rect x="16" y="24" width="32" height="8"/>
+    <rect x="20" y="32" width="24" height="4"/>
+    <rect x="24" y="36" width="16" height="4"/>
+    <rect x="28" y="40" width="8" height="4"/>
+  </g>
+  <!-- brilho -->
+  <rect x="22" y="24" width="4" height="4" fill="#ff8a95"/>
+  <!-- estrelinhas -->
+  <rect x="10" y="12" width="2" height="2" fill="#f2f2f2"/>
+  <rect x="52" y="16" width="2" height="2" fill="#f2f2f2"/>
+  <rect x="14" y="48" width="2" height="2" fill="#f2f2f2" opacity="0.6"/>
+  <rect x="48" y="50" width="2" height="2" fill="#f2f2f2" opacity="0.6"/>
+</svg>

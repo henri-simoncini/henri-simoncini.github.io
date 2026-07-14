@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 90">
+  <rect width="160" height="90" fill="#10101f"/>
+  <rect x="3" y="3" width="154" height="84" fill="none" stroke="#0f776e" stroke-width="1" stroke-dasharray="4 3"/>
+  <!-- câmera pixelada -->
+  <rect x="65" y="35" width="30" height="20" rx="1" fill="none" stroke="#00eeff" stroke-width="1.5"/>
+  <circle cx="80" cy="45" r="6" fill="none" stroke="#00eeff" stroke-width="1.5"/>
+  <rect x="73" y="31" width="14" height="4" fill="#00eeff"/>
+  <rect x="90" y="38" width="3" height="3" fill="#00eeff"/>
+  <text x="80" y="72" text-anchor="middle" font-family="monospace" font-size="8" fill="#0f776e">16:9</text>
+</svg>

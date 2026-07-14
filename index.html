@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Henrique Simoncini — Portfólio</title>
+    <meta name="description"
+      content="Portfólio pessoal de Henrique Simoncini — Full Stack Developer, UI/UX & Web Designer — em formato de explorador de arquivos.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Jersey+10&family=Jersey+20&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Pixelify+Sans:wght@400..700&display=swap"
+      rel="stylesheet">
+
+    <link rel="stylesheet" href="css/style.css">
+  </head>
+  <body>
+
+    <div class="explorer-window intro-mode" id="explorer-window">
+
+      <!-- Barra de título -->
+      <header class="title-bar">
+        <div class="title-bar-left">
+          <svg class="title-icon" width="16" height="16"><use href="assets/icons.svg#icon-folder"></use></svg>
+          <span class="title-text">Henrique Simoncini — Portfólio.exe</span>
+        </div>
+        <div class="title-bar-buttons">
+          <button class="tb-btn tb-min" id="btn-minimize" title="Minimizar" aria-label="Minimizar">&#8211;</button>
+          <button class="tb-btn tb-max" id="btn-maximize" title="Maximizar" aria-label="Maximizar">&#9633;</button>
+          <button class="tb-btn tb-close" id="btn-close" title="Fechar" aria-label="Fechar">&#10005;</button>
+        </div>
+      </header>
+
+      <!-- Barra de menu -->
+      <nav class="menu-bar">
+        <div class="menu-wrap">
+          <span class="menu-item" id="menu-file">File</span>
+        </div>
+        <div class="menu-wrap">
+          <span class="menu-item" id="menu-edit">Edit</span>
+          <div class="menu-dropdown" id="dropdown-edit">
+            <button class="dd-item" id="dd-theme">☀️ Tema claro</button>
+            <div class="dd-sep"></div>
+            <div class="dd-label">Cor principal</div>
+            <div class="dd-swatches">
+              <button class="swatch" data-accent="ciano" title="Ciano" style="background:#00eeff"></button>
+              <button class="swatch" data-accent="laranja" title="Laranja" style="background:#ff9d00"></button>
+              <button class="swatch" data-accent="vermelho" title="Vermelho" style="background:#ff3b4d"></button>
+              <button class="swatch" data-accent="mono" title="Monocromático"
+                style="background:linear-gradient(135deg,#f2f2f2 50%,#555 50%)"></button>
+              <button class="swatch" data-accent="verde" title="Verde" style="background:#2bff70"></button>
+              <button class="swatch" data-accent="azul" title="Azul" style="background:#3b7bff"></button>
+              <button class="swatch" data-accent="amarelo" title="Amarelo" style="background:#ffe600"></button>
+              <button class="swatch" data-accent="roxo" title="Roxo" style="background:#a95cff"></button>
+              <button class="swatch" data-accent="rosa" title="Rosa" style="background:#ff5cd7"></button>
+            </div>
+          </div>
+        </div>
+        <div class="menu-wrap">
+          <span class="menu-item" id="menu-view">View</span>
+          <div class="menu-dropdown" id="dropdown-view">
+            <a class="dd-item" href="assets/curriculo-henrique-simoncini.pdf"
+              download="Curriculo-Henrique-Simoncini.pdf">📄 Baixar currículo (.pdf)</a>
+            <button class="dd-item" id="dd-github">🐙 Visualizar GitHub</button>
+          </div>
+        </div>
+        <div class="menu-wrap">
+          <span class="menu-item" id="menu-favorites">Favorites</span>
+          <div class="menu-dropdown" id="dropdown-favorites">
+            <a class="dd-item"
+              href="https://docs.google.com/spreadsheets/d/1sXq_1-yaHI9KKuFa607b5NMeNAau1Cm_JxP1ZnCTr7I/edit?usp=sharing"
+              target="_blank" rel="noopener">⭐ Ficha Lunaris (Excel)</a>
+            <a class="dd-item" href="https://henri-simoncini.github.io/outlast-fanpage/" target="_blank"
+              rel="noopener">⭐ Outlast Fanpage</a>
+          </div>
+        </div>
+        <div class="menu-wrap">
+          <span class="menu-item" id="menu-tools">Tools</span>
+          <div class="menu-dropdown" id="dropdown-tools">
+            <button class="dd-item" id="dd-player-toggle">🎵 Desabilitar player de música</button>
+          </div>
+        </div>
+        <div class="menu-wrap">
+          <span class="menu-item" id="menu-help">Help</span>
+        </div>
+        <button class="hamburger" id="btn-hamburger" aria-label="Abrir menu de pastas">&#9776;</button>
+      </nav>
+
+      <!-- Barra de caminho + busca -->
+      <div class="path-bar">
+        <span class="path-text" id="path-text">C:\Portfólio\Bem-vindo.txt</span>
+        <input type="text" class="search-box" id="search-box" placeholder="Pesquisar no portfólio...">
+      </div>
+
+      <div class="main-area">
+
+        <!-- Tela de apresentação (modo intro) -->
+        <section class="intro-screen" id="intro-screen">
+          <div class="intro-box">
+            <p class="intro-text" id="intro-text-1"></p>
+            <p class="intro-text intro-text-2" id="intro-text-2"></p>
+            <span class="intro-hint" id="intro-hint" aria-hidden="true">▼</span>
+          </div>
+        </section>
+
+        <!-- Sidebar: árvore de pastas -->
+        <aside class="sidebar" id="sidebar">
+          <ul class="tree" id="tree">
+
+            <li class="file active" data-target="bemvindo" data-path="C:\Portfólio\Bem-vindo.txt">
+              <span class="file-label">
+                <svg class="node-icon" width="14" height="14"><use href="assets/icons.svg#icon-file"></use></svg>
+                <span class="file-name">Bem-vindo</span><span class="ext-badge">.txt</span>
+              </span>
+            </li>
+
+            <li class="folder open" data-name="sobre">
+              <span class="folder-label">
+                <svg class="node-icon folder-icon" width="14" height="14"><use
+                    href="assets/icons.svg#icon-folder-open"></use></svg>
+                <span class="folder-name">Sobre Mim</span>
+              </span>
+              <ul class="folder-children">
+                <li class="file" data-target="bio" data-path="C:\Portfólio\Sobre Mim\Bio.txt">
+                  <span class="file-label">
+                    <svg class="node-icon" width="14" height="14"><use href="assets/icons.svg#icon-file"></use></svg>
+                    <span class="file-name">Bio</span><span class="ext-badge">.txt</span>
+                  </span>
+                </li>
+                <li class="file" data-target="skills" data-path="C:\Portfólio\Sobre Mim\Skills.txt">
+                  <span class="file-label">
+                    <svg class="node-icon" width="14" height="14"><use href="assets/icons.svg#icon-file"></use></svg>
+                    <span class="file-name">Skills</span><span class="ext-badge">.txt</span>
+                  </span>
+                </li>
+              </ul>
+            </li>
+
+            <li class="folder open" data-name="projetos">
+              <span class="folder-label">
+                <svg class="node-icon folder-icon" width="14" height="14"><use
+                    href="assets/icons.svg#icon-folder-open"></use></svg>
+                <span class="folder-name">Projetos</span>
+              </span>
+              <ul class="folder-children">
+                <li class="file" data-target="projeto1" data-path="C:\Portfólio\Projetos\inDash.md">
+                  <span class="file-label">
+                    <svg class="node-icon" width="14" height="14"><use href="assets/icons.svg#icon-file"></use></svg>
+                    <span class="file-name">inDash</span><span class="ext-badge">.md</span>
+                  </span>
+                </li>
+                <li class="file" data-target="luminus" data-path="C:\Portfólio\Projetos\Projeto-Luminus.md">
+                  <span class="file-label">
+                    <svg class="node-icon" width="14" height="14"><use href="assets/icons.svg#icon-file"></use></svg>
+                    <span class="file-name">Projeto-Luminus</span><span class="ext-badge">.md</span>
+                  </span>
+                </li>
+                <li class="file" data-target="bordhok" data-path="C:\Portfólio\Projetos\Bot-Bordhok.md">
+                  <span class="file-label">
+                    <svg class="node-icon" width="14" height="14"><use href="assets/icons.svg#icon-file"></use></svg>
+                    <span class="file-name">Bot-Bordhok</span><span class="ext-badge">.md</span>
+                  </span>
+                </li>
+                <li class="file" data-target="site-artigo" data-path="C:\Portfólio\Projetos\Site-Artigo.md">
+                  <span class="file-label">
+                    <svg class="node-icon" width="14" height="14"><use href="assets/icons.svg#icon-file"></use></svg>
+                    <span class="file-name">Site-Artigo</span><span class="ext-badge">.md</span>
+                  </span>
+                </li>
+                <li class="file" data-target="projeto2" data-path="C:\Portfólio\Projetos\Mais-Projetos.md">
+                  <span class="file-label">
+                    <svg class="node-icon" width="14" height="14"><use href="assets/icons.svg#icon-file"></use></svg>
+                    <span class="file-name">Mais-Projetos</span><span class="ext-badge">.md</span>
+                  </span>
+                </li>
+              </ul>
+            </li>
+
+            <li class="folder" data-name="designs">
+              <span class="folder-label">
+                <svg class="node-icon folder-icon" width="14" height="14"><use
+                    href="assets/icons.svg#icon-folder"></use></svg>
+                <span class="folder-name">Designs</span>
+              </span>
+              <ul class="folder-children">
+                <li class="file" data-target="designs" data-path="C:\Portfólio\Designs\Meus-Designs.psd">
+                  <span class="file-label">
+                    <svg class="node-icon" width="14" height="14"><use href="assets/icons.svg#icon-file"></use></svg>
+                    <span class="file-name">Meus-Designs</span><span class="ext-badge">.psd</span>
+                  </span>
+                </li>
+              </ul>
+            </li>
+
+            <li class="folder" data-name="galeria">
+              <span class="folder-label">
+                <svg class="node-icon folder-icon" width="14" height="14"><use
+                    href="assets/icons.svg#icon-folder"></use></svg>
+                <span class="folder-name">Galeria de Fotos</span>
+              </span>
+              <ul class="folder-children">
+                <li class="file" data-target="galeria" data-path="C:\Portfólio\Galeria de Fotos\Minhas-Fotos.img">
+                  <span class="file-label">
+                    <svg class="node-icon" width="14" height="14"><use href="assets/icons.svg#icon-file"></use></svg>
+                    <span class="file-name">Minhas-Fotos</span><span class="ext-badge">.img</span>
+                  </span>
+                </li>
+              </ul>
+            </li>
+
+            <li class="folder" data-name="experiencia">
+              <span class="folder-label">
+                <svg class="node-icon folder-icon" width="14" height="14"><use
+                    href="assets/icons.svg#icon-folder"></use></svg>
+                <span class="folder-name">Experiência &amp; Educação</span>
+              </span>
+              <ul class="folder-children">
+                <li class="file" data-target="experiencia"
+                  data-path="C:\Portfólio\Experiência &amp; Educação\Experiência.txt">
+                  <span class="file-label">
+                    <svg class="node-icon" width="14" height="14"><use href="assets/icons.svg#icon-file"></use></svg>
+                    <span class="file-name">Experiência</span><span class="ext-badge">.txt</span>
+                  </span>
+                </li>
+                <li class="file" data-target="educacao"
+                  data-path="C:\Portfólio\Experiência &amp; Educação\Educação.txt">
+                  <span class="file-label">
+                    <svg class="node-icon" width="14" height="14"><use href="assets/icons.svg#icon-file"></use></svg>
+                    <span class="file-name">Educação</span><span class="ext-badge">.txt</span>
+                  </span>
+                </li>
+              </ul>
+            </li>
+
+            <li class="folder" data-name="contato">
+              <span class="folder-label">
+                <svg class="node-icon folder-icon" width="14" height="14"><use
+                    href="assets/icons.svg#icon-folder"></use></svg>
+                <span class="folder-name">Contato</span>
+              </span>
+              <ul class="folder-children">
+                <li class="file" data-target="contato" data-path="C:\Portfólio\Contato\Contato.txt">
+                  <span class="file-label">
+                    <svg class="node-icon" width="14" height="14"><use href="assets/icons.svg#icon-file"></use></svg>
+                    <span class="file-name">Contato</span><span class="ext-badge">.txt</span>
+                  </span>
+                </li>
+              </ul>
+            </li>
+
+          </ul>
+        </aside>
+
+        <!-- Painel de conteúdo -->
+        <main class="content-pane" id="content-pane">
+
+          <article class="file-view active" data-file="bemvindo">
+            <div class="welcome-layout">
+
+              <div class="welcome-main">
+                <h1 class="fv-title">Oii, eu sou o Henrique Simoncini!</h1>
+                <h2 class="fv-subtitle">Estudante de Tecnologia em Sistemas Computacionais | Full Stack Developer</h2>
+                <div class="fv-tags">
+                  <span class="tag">💻 Desenvolvedor Web</span>
+                  <span class="tag">🎨 UI/UX &amp; Web Designer</span>
+                  <span class="tag">🖌️ Identidade Visual</span>
+                  <span class="tag">📸 Fotografia Criativa</span>
+                </div>
+                <p>Este é o meu portfólio pessoal, construído com a estética de um explorador de arquivos. Use a árvore
+                  de pastas à esquerda (ou a busca no topo) para navegar entre <strong>Sobre Mim</strong>,
+                  <strong>Projetos</strong>, <strong>Designs</strong>, <strong>Galeria de Fotos</strong>,
+                  <strong>Experiência &amp; Educação</strong> e <strong>Contato</strong>.</p>
+                <p>Fique à vontade para clicar nas pastas e abrir os arquivos! Cada um deles conta um pouco mais sobre
+                  quem eu sou e o que eu faço.</p>
+              </div>
+
+              <!-- Lateral direita: perfil com presença em tempo real (Discord/Lanyard) -->
+              <aside class="welcome-side">
+                <div class="profile-card">
+                  <div class="profile-avatar-wrap">
+                    <img class="profile-avatar" src="assets/profile.jpg" alt="Foto de perfil de Henrique Simoncini">
+                    <span class="status-dot" id="status-dot" title="Online"></span>
+                  </div>
+                  <div class="profile-info">
+                    <span class="profile-name">Henrique Simoncini</span>
+                    <span class="profile-status" id="profile-status">Online agora</span>
+                    <span class="profile-note" id="profile-note" hidden></span>
+                  </div>
+                </div>
+                <div class="profile-activities" id="profile-activities"></div>
+                <div class="fv-tags profile-socials">
+                  <a class="tag tag-link"
+                    href="https://open.spotify.com/user/31grkqcovfny5mhkbjhybbkat6ia?si=9d0bc72689984a59"
+                    target="_blank" rel="noopener">🎧 Spotify</a>
+                  <a class="tag tag-link" href="https://steamcommunity.com/profiles/76561198886933280/" target="_blank"
+                    rel="noopener">🎮 Steam</a>
+                  <a class="tag tag-link" href="https://br.pinterest.com/henri_eb/" target="_blank" rel="noopener">📌
+                    Pinterest</a>
+                </div>
+              </aside>
+
+            </div>
+          </article>
+
+          <article class="file-view" data-file="bio">
+            <h1 class="fv-title">Bio</h1>
+            <h2 class="fv-subtitle">Sobre Mim</h2>
+            <p>Sou um desenvolvedor Full Stack e estudante de <strong>Tecnologia em Sistemas de Computação</strong> na
+              <strong>Universidade Federal Fluminense</strong>. Minha jornada na tecnologia teve início no ensino médio
+              técnico em Informática (IFRJ), o que me deu uma base sólida que hoje aplico em projetos de desenvolvimento
+              de software.</p>
+            <p>Tenho experiência em <strong>desenvolvimento web</strong>, <strong>atendimento ao público</strong> e
+              <strong>rotinas administrativas</strong> — já atuei como recepcionista realizando gestão operacional e
+              controle financeiro, além de monitoria acadêmica de lógica computacional. Sou comprometido, organizado e
+              busco desafios que me permitam aprender e gerar impacto.</p>
+            <p>Além do código, também atuo com <strong>UI/UX e Web Design</strong>, criação de <strong>identidade
+                visual</strong> (logos e flyers) e <strong>fotografia criativa</strong> — unindo tecnologia e design em
+              tudo que faço.</p>
+            <p class="fv-meta">📍 São Pedro da Aldeia, RJ</p>
+          </article>
+
+          <article class="file-view" data-file="skills">
+            <h1 class="fv-title">Skills</h1>
+            <h2 class="fv-subtitle">Sobre Mim</h2>
+            <p class="fv-label">💻 Front-end</p>
+            <div class="fv-tags">
+              <span class="tag">HTML</span>
+              <span class="tag">CSS</span>
+              <span class="tag">JavaScript</span>
+              <span class="tag">TypeScript</span>
+              <span class="tag">React</span>
+              <span class="tag">Bootstrap</span>
+            </div>
+            <p class="fv-label">⚙️ Back-end</p>
+            <div class="fv-tags">
+              <span class="tag">Python</span>
+              <span class="tag">Java</span>
+              <span class="tag">PHP</span>
+              <span class="tag">MySQL</span>
+              <span class="tag">PhpMyAdmin</span>
+            </div>
+            <p class="fv-label">📦 Bibliotecas &amp; APIs</p>
+            <div class="fv-tags">
+              <span class="tag">Chart.js</span>
+              <span class="tag">Swiper.js</span>
+              <span class="tag">Discord.py</span>
+              <span class="tag">JSDelivr</span>
+            </div>
+            <p class="fv-label">🎨 Design</p>
+            <div class="fv-tags">
+              <span class="tag">Photoshop</span>
+              <span class="tag">Illustrator</span>
+              <span class="tag">Lightroom</span>
+              <span class="tag">Figma</span>
+              <span class="tag">Canva</span>
+            </div>
+            <p class="fv-label">🔧 Ferramentas &amp; Hardware</p>
+            <div class="fv-tags">
+              <span class="tag">Git</span>
+              <span class="tag">GitHub</span>
+              <span class="tag">Montagem de hardware</span>
+              <span class="tag">Manutenção de computadores</span>
+            </div>
+            <p class="fv-label">🌎 Idiomas</p>
+            <div class="fv-tags">
+              <span class="tag">Português (nativo)</span>
+              <span class="tag">Inglês (avançado)</span>
+            </div>
+          </article>
+
+          <article class="file-view" data-file="projeto1">
+            <h1 class="fv-title">inDash</h1>
+            <h2 class="fv-subtitle">Dashboard e gerenciamento para freelancers</h2>
+            <div class="fv-tags">
+              <span class="tag">👉 Em desenvolvimento</span>
+              <span class="tag">projeto em destaque</span>
+            </div>
+            <p>O <strong>inDash</strong> é uma plataforma de dashboard e gerenciamento pensada para freelancers
+              organizarem o próprio trabalho em um só lugar.</p>
+            <p class="fv-label">Funcionalidades</p>
+            <p>📊 Gráficos inteligentes<br>
+              📅 Agendas personalizadas<br>
+              💰 Gestão financeira</p>
+          </article>
+
+          <article class="file-view" data-file="luminus">
+            <h1 class="fv-title">Projeto Luminus</h1>
+            <h2 class="fv-subtitle">Plataforma de estudos multiformato</h2>
+            <div class="fv-tags">
+              <span class="tag">HTML/CSS/JS</span>
+              <span class="tag">PHP</span>
+              <span class="tag">MySQL</span>
+              <span class="tag">Figma</span>
+            </div>
+            <p class="fv-meta">Equipe IFRJ · Fevereiro de 2024 – Fevereiro de 2025 · Híbrido, Arraial do Cabo/RJ</p>
+            <p>Desenvolvi com minha equipe um site de estudos onde o usuário pode escolher entre diferentes formatos de
+              conteúdo: <strong>vídeo, áudio ou texto</strong>.</p>
+            <p>Fui responsável pelo design no <strong>Figma</strong> e pelo front-end com HTML, CSS e JavaScript.
+              Implementei o back-end com <strong>PHP, MySQL e PhpMyAdmin</strong> para gerenciamento de usuários e
+              disciplinas.</p>
+          </article>
+
+          <article class="file-view" data-file="bordhok">
+            <h1 class="fv-title">Discord Bot Bordhok</h1>
+            <h2 class="fv-subtitle">Bot de comandos para Discord</h2>
+            <div class="fv-tags">
+              <span class="tag">Python</span>
+              <span class="tag">Discord.py</span>
+            </div>
+            <p class="fv-meta">Projeto pessoal · Abril de 2025 – Maio de 2025</p>
+            <p>Desenvolvi um bot para a plataforma Discord que responde a diversos comandos executados na caixa de
+              texto.</p>
+            <p>Utilizei <strong>Python</strong> e a biblioteca <strong>Discord.py</strong> para integração e automação
+              de funcionalidades.</p>
+          </article>
+
+          <article class="file-view" data-file="site-artigo">
+            <h1 class="fv-title">Site de Artigo + Questionário</h1>
+            <h2 class="fv-subtitle">Projeto freelance</h2>
+            <div class="fv-tags">
+              <span class="tag">HTML/CSS/JS</span>
+              <span class="tag">PHP</span>
+              <span class="tag">Chart.js</span>
+              <span class="tag">Swiper.js</span>
+            </div>
+            <p class="fv-meta">Freelance · Maio de 2024 · Online</p>
+            <p>Desenvolvi um site de um artigo, acompanhado de um questionário que faz perguntas sobre o tema e armazena
+              as respostas.</p>
+            <p>Utilizei HTML, CSS, JavaScript e PHP para a estrutura e funcionalidade, com as bibliotecas
+              <strong>Chart.js</strong> e <strong>Swiper.js</strong> para criação de gráficos e sliders de imagem.</p>
+          </article>
+
+          <article class="file-view" data-file="projeto2">
+            <h1 class="fv-title">Mais Projetos</h1>
+            <h2 class="fv-subtitle">Repositórios no GitHub</h2>
+            <div class="fv-tags">
+              <span class="tag">open source</span>
+              <span class="tag">github</span>
+            </div>
+            <p>Você pode acompanhar todos os meus projetos, experimentos e contribuições diretamente no meu perfil do
+              GitHub.</p>
+            <p><a class="fv-link" href="https://github.com/henri-simoncini" target="_blank"
+                rel="noopener">github.com/henri-simoncini →</a></p>
+          </article>
+
+          <article class="file-view" data-file="experiencia">
+            <h1 class="fv-title">Experiência</h1>
+            <h2 class="fv-subtitle">Experiência &amp; Educação</h2>
+
+            <p class="fv-label">Recepcionista — Academia Viva 100%</p>
+            <p class="fv-meta">Novembro de 2025 – Junho de 2026 · São Pedro da Aldeia, RJ</p>
+            <p>Atendimento presencial e online de alunos, controle de caixa e conferência financeira diária, organização
+              de estoque, gestão de agenda para avaliações físicas e apoio às rotinas administrativas da unidade.</p>
+
+            <hr class="fv-sep">
+
+            <p class="fv-label">Desenvolvedor Web — Freelancer</p>
+            <p class="fv-meta">Maio de 2024 · Online</p>
+            <p>Desenvolvimento de site de artigo com questionário interativo que armazena respostas, utilizando HTML,
+              CSS, JavaScript e PHP, com gráficos em Chart.js e sliders em Swiper.js.</p>
+
+            <hr class="fv-sep">
+
+            <p class="fv-label">Monitor de Lógica Computacional — IFRJ</p>
+            <p class="fv-meta">Janeiro de 2023 – Agosto de 2023 · Arraial do Cabo, RJ</p>
+            <p>Auxiliei estudantes com dificuldades em estruturas lógicas por meio da linguagem Python, criando
+              materiais de estudo com exemplos de estruturas condicionais e de repetição nas IDEs VisualG e PyCharm.</p>
+          </article>
+
+          <article class="file-view" data-file="educacao">
+            <h1 class="fv-title">Educação</h1>
+            <h2 class="fv-subtitle">Experiência &amp; Educação</h2>
+
+            <p class="fv-label">Tecnologia em Sistemas de Computação</p>
+            <p class="fv-meta">Universidade Federal Fluminense (UFF) · Cursando desde fevereiro de 2025</p>
+
+            <hr class="fv-sep">
+
+            <p class="fv-label">Ensino médio técnico integrado em Informática</p>
+            <p class="fv-meta">Instituto Federal do Rio de Janeiro (IFRJ) · 2021 – 2024</p>
+
+            <hr class="fv-sep">
+
+            <p class="fv-label">Inglês Avançado</p>
+            <p class="fv-meta">SAYS Centro de Ensino · 2017 – 2023</p>
+
+            <hr class="fv-sep">
+
+            <p class="fv-label">📚 Estudos atuais</p>
+            <p class="fv-meta">Formação Front-end — Alura (HTML, CSS, JavaScript, React e TypeScript)</p>
+            <p class="fv-meta">Especialização em IA — Alura (fundamentos, aplicações práticas e ferramentas
+              modernas)</p>
+
+            <hr class="fv-sep">
+
+            <p class="fv-label">🏅 Certificações</p>
+            <p class="fv-meta">Diálogos entre IA e Ciência da Aprendizagem — APPAI</p>
+          </article>
+
+          <article class="file-view" data-file="designs">
+            <h1 class="fv-title">Meus Designs</h1>
+            <h2 class="fv-subtitle">UI/UX, identidade visual &amp; posts</h2>
+            <p>Uma seleção de designs de páginas, posts e logos criados por mim — passe o mouse sobre as imagens para
+              explorá-las de cima a baixo.</p>
+
+            <div class="design-list">
+
+              <div class="design-item">
+                <div class="design-img">
+                  <img src="assets/designs/marries-caffe.png" alt="Design do site Marrie's Caffe" loading="lazy">
+                </div>
+                <div class="design-text">
+                  <h3 class="design-title">Marrie's Caffe</h3>
+                  <p class="design-date">Novembro de 2024</p>
+                  <p>Desenvolvi esse design casualmente durante meu período de formação no IFRJ, misturando duas coisas
+                    que eu amo: <strong>café e design</strong>.</p>
+                </div>
+              </div>
+
+              <div class="design-item">
+                <div class="design-img">
+                  <img src="assets/designs/porsche-911.png" alt="Post de Instagram do Porsche 911 Turbo S"
+                    loading="lazy">
+                </div>
+                <div class="design-text">
+                  <h3 class="design-title">Porsche 911 Turbo S</h3>
+                  <p class="design-date">Março de 2026</p>
+                  <p>Para testar meus conhecimentos, escolhi um assunto que gosto — <strong>carros, especificamente a
+                      Porsche</strong> — e desenvolvi um post para Instagram no formato 4:5.</p>
+                </div>
+              </div>
+
+              <div class="design-item">
+                <div class="design-img">
+                  <img src="assets/designs/viva-100.png" alt="Design do site da Academia Viva 100%" loading="lazy">
+                </div>
+                <div class="design-text">
+                  <h3 class="design-title">Viva 100%</h3>
+                  <p class="design-date">Maio de 2026</p>
+                  <p>O dono da empresa gostou dos meus projetos e pediu para que eu fizesse um pequeno design mostrando
+                    como poderia ser um <strong>futuro site da academia</strong>.</p>
+                </div>
+              </div>
+
+              <div class="design-item">
+                <div class="design-img">
+                  <img src="assets/designs/taty-modas.png" alt="Logo da Taty Modas" loading="lazy">
+                </div>
+                <div class="design-text">
+                  <h3 class="design-title">Taty Modas</h3>
+                  <p class="design-date">Junho de 2026</p>
+                  <p>A dona do comércio ganhou esta <strong>logo desenhada por mim</strong>. Ela gostou muito do
+                    resultado.</p>
+                </div>
+              </div>
+
+              <div class="design-item">
+                <div class="design-img">
+                  <img src="assets/designs/archivo-rpg.png" alt="Design do site Archivo RPG" loading="lazy">
+                </div>
+                <div class="design-text">
+                  <h3 class="design-title">Archivo RPG</h3>
+                  <p class="design-date">Janeiro de 2025</p>
+                  <p>Site do meu <strong>RPG de mesa</strong>, também desenvolvido casualmente — um dos meus projetos
+                    futuros é criar uma plataforma para RPG de mesa online.</p>
+                </div>
+              </div>
+
+            </div>
+          </article>
+
+          <article class="file-view" data-file="galeria">
+            <h1 class="fv-title">Galeria de Fotos</h1>
+            <h2 class="fv-subtitle">Fotografia criativa &amp; edições autorais</h2>
+            <p>Um pouco do meu olhar através das lentes — fotos autorais com edição própria, clicadas na minha lendária
+              <strong>Sony Cybershot 12.1MP</strong> (veterana de guerra que se recusa a aposentar 📷) e no fiel
+              <strong>Motorola Moto G30</strong> de bolso. Equipamento simples, olhar afiado. Passe o mouse sobre cada
+              foto para ver a legenda — e clique para ver em tela cheia.</p>
+
+            <div class="gallery">
+
+              <div class="gallery-block">
+                <figure class="g-item g-tall">
+                  <img src="assets/gallery/image-03.jpeg" alt="Foto 01" loading="lazy">
+                  <figcaption>Armação dos Búzios</figcaption>
+                </figure>
+                <figure class="g-item g-wide">
+                  <img src="assets/gallery/image-23.jpeg" alt="Foto 02" loading="lazy">
+                  <figcaption>Na orla de São Pedro da Aldeia... "Ela une todas as coisas..."</figcaption>
+                </figure>
+                <figure class="g-item g-sq">
+                  <img src="assets/gallery/image-15.jpeg" alt="Foto 03" loading="lazy">
+                  <figcaption>"Seu olho é muito bonito, fica parada"</figcaption>
+                </figure>
+                <figure class="g-item g-sq">
+                  <img src="assets/gallery/image-05.jpeg" alt="Foto 04" loading="lazy">
+                  <figcaption>Essa foto me lembra Far Cry 5, por algum motivo</figcaption>
+                </figure>
+              </div>
+
+              <div class="gallery-block flip">
+                <figure class="g-item g-tall">
+                  <img src="assets/gallery/image-35.jpeg" alt="Foto 05" loading="lazy">
+                  <figcaption>De repente, decidi que olharia para cima, enquanto caminhava por Saquarema -
+                    RJ</figcaption>
+                </figure>
+                <figure class="g-item g-wide">
+                  <img src="assets/gallery/image-17.jpeg" alt="Foto 06" loading="lazy">
+                  <figcaption>As flores da minha faculdade são muito bonitas</figcaption>
+                </figure>
+                <figure class="g-item g-sq">
+                  <img src="assets/gallery/image-34.jpeg" alt="Foto 07" loading="lazy">
+                  <figcaption>Nas ruas, encontrei sua textura</figcaption>
+                </figure>
+                <figure class="g-item g-sq">
+                  <img src="assets/gallery/image-12.jpeg" alt="Foto 08" loading="lazy">
+                  <figcaption>Abelhas rodeiam esses frutinhos</figcaption>
+                </figure>
+              </div>
+
+              <div class="gallery-block">
+                <figure class="g-item g-tall">
+                  <img src="assets/gallery/image-29.jpeg" alt="Foto 09" loading="lazy">
+                  <figcaption>Laboratório de Multimídia - Faetec Saquarema</figcaption>
+                </figure>
+                <figure class="g-item g-wide">
+                  <img src="assets/gallery/image-13.jpeg" alt="Foto 10" loading="lazy">
+                  <figcaption>Como gosto de uma biblioteca... livros são minha paixão</figcaption>
+                </figure>
+                <figure class="g-item g-sq">
+                  <img src="assets/gallery/image-33.jpeg" alt="Foto 11" loading="lazy">
+                  <figcaption>Observei esse <i>frame</i> e não pude deixar de registrar</figcaption>
+                </figure>
+                <figure class="g-item g-sq">
+                  <img src="assets/gallery/image-24.jpeg" alt="Foto 12" loading="lazy">
+                  <figcaption>Livros, livros e mais livros!!!</figcaption>
+                </figure>
+              </div>
+
+              <div class="gallery-block flip">
+                <figure class="g-item g-tall">
+                  <img src="assets/gallery/image-27.jpeg" alt="Foto 13" loading="lazy">
+                  <figcaption>Sentado no pier, observando o mar</figcaption>
+                </figure>
+                <figure class="g-item g-wide">
+                  <img src="assets/gallery/image-02.jpeg" alt="Foto 14" loading="lazy">
+                  <figcaption>Fragmentos passados</figcaption>
+                </figure>
+                <figure class="g-item g-sq">
+                  <img src="assets/gallery/image-18.jpeg" alt="Foto 15" loading="lazy">
+                  <figcaption>Não há ventos por aqui...</figcaption>
+                </figure>
+                <figure class="g-item g-sq">
+                  <img src="assets/gallery/image-06.jpeg" alt="Foto 16" loading="lazy">
+                  <figcaption>Um escorregador criou esse <i>frame</i></figcaption>
+                </figure>
+              </div>
+
+              <div class="gallery-block">
+                <figure class="g-item g-tall">
+                  <img src="assets/gallery/image-21.jpeg" alt="Foto 17" loading="lazy">
+                  <figcaption>Não, eu não estive em Sillent Hill</figcaption>
+                </figure>
+                <figure class="g-item g-wide">
+                  <img src="assets/gallery/image-16.jpeg" alt="Foto 18" loading="lazy">
+                  <figcaption>Esta trilha não fica em Sillent Hill, eu prometo</figcaption>
+                </figure>
+                <figure class="g-item g-sq">
+                  <img src="assets/gallery/image-10.jpeg" alt="Foto 19" loading="lazy">
+                  <figcaption>Estavam colocando uma tenda com um guindaste?</figcaption>
+                </figure>
+                <figure class="g-item g-sq">
+                  <img src="assets/gallery/image-11.jpeg" alt="Foto 20" loading="lazy">
+                  <figcaption>60km/h é a velocidade máxima permitida por aqui</figcaption>
+                </figure>
+              </div>
+
+            </div>
+          </article>
+
+          <article class="file-view" data-file="github-view">
+            <h1 class="fv-title">GitHub</h1>
+            <h2 class="fv-subtitle">github.com/henri-simoncini</h2>
+            <div class="fv-tags">
+              <span class="tag">45+ repositórios</span>
+              <span class="tag">open source</span>
+            </div>
+            <p>Estatísticas do meu perfil, geradas em tempo real:</p>
+            <div class="gh-stats">
+              <img class="gh-card"
+                src="https://github-readme-stats-sigma-five.vercel.app/api?username=henri-simoncini&amp;show_icons=true&amp;theme=tokyonight&amp;hide_border=true&amp;bg_color=10101f"
+                alt="Estatísticas do GitHub de henri-simoncini">
+              <img class="gh-card"
+                src="https://github-readme-stats-sigma-five.vercel.app/api/top-langs/?username=henri-simoncini&amp;layout=compact&amp;theme=tokyonight&amp;hide_border=true&amp;bg_color=10101f"
+                alt="Linguagens mais usadas por henri-simoncini">
+            </div>
+            <p><a class="fv-link" href="https://github.com/henri-simoncini" target="_blank" rel="noopener">Abrir perfil
+                completo no GitHub →</a></p>
+          </article>
+
+          <article class="file-view" data-file="contato">
+            <h1 class="fv-title">Contato</h1>
+            <h2 class="fv-subtitle">Entre em contato</h2>
+            <p>Fico feliz em conversar sobre novos projetos, oportunidades ou só trocar uma ideia sobre tecnologia e
+              design.</p>
+            <p class="fv-meta">📍 São Pedro da Aldeia, RJ</p>
+
+            <form class="contact-form" id="contact-form">
+              <label class="cf-label" for="cf-name">Seu nome</label>
+              <input class="cf-input" id="cf-name" type="text" placeholder="Como você se chama?" maxlength="80"
+                required>
+
+              <label class="cf-label" for="cf-subject">Assunto</label>
+              <input class="cf-input" id="cf-subject" type="text" placeholder="Sobre o que quer falar?" maxlength="120"
+                required>
+
+              <label class="cf-label" for="cf-message">Mensagem</label>
+              <textarea class="cf-textarea" id="cf-message" rows="5" placeholder="Escreva sua mensagem..."
+                maxlength="1000" required></textarea>
+
+              <button class="cf-submit" type="submit">Enviar via WhatsApp ➤</button>
+            </form>
+
+            <p class="fv-label">Ou me encontre por aqui:</p>
+            <div class="fv-tags">
+              <a class="tag tag-link" href="mailto:ph.simoncini@gmail.com">✉️ ph.simoncini@gmail.com</a>
+              <a class="tag tag-link" href="https://github.com/henri-simoncini" target="_blank"
+                rel="noopener">GitHub</a>
+              <a class="tag tag-link" href="https://www.linkedin.com/in/pedro-henrique-simoncini-a71453276/"
+                target="_blank" rel="noopener">LinkedIn</a>
+              <a class="tag tag-link" href="https://www.instagram.com/henriq.devdesign/" target="_blank"
+                rel="noopener">Instagram</a>
+              <a class="tag tag-link" href="https://discord.gg/xZh9Z6ECf8" target="_blank" rel="noopener">Discord</a>
+              <a class="tag tag-link"
+                href="https://api.whatsapp.com/send/?phone=5522981600830&amp;type=phone_number&amp;app_absent=0"
+                target="_blank" rel="noopener">WhatsApp</a>
+              <a class="tag tag-link" href="https://henri-simoncini.github.io/linktree/" target="_blank"
+                rel="noopener">Linktree</a>
+            </div>
+          </article>
+
+        </main>
+      </div>
+
+      <!-- Barra de status -->
+      <footer class="status-bar">
+        <span id="status-path">C:\Portfólio\Bem-vindo.txt</span>
+        <span class="status-right">
+          <span id="status-count">5 pastas, 9 arquivos</span>
+          <button class="vinyl-btn" id="vinyl-btn" title="Lofi Player" aria-label="Abrir player de música">
+            <svg class="vinyl-icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+              <circle cx="12" cy="12" r="11" fill="#0a0a14" />
+              <circle cx="12" cy="12" r="9.5" fill="none" stroke="#1c1c2e" stroke-width="0.8" />
+              <circle cx="12" cy="12" r="7.5" fill="none" stroke="#1c1c2e" stroke-width="0.8" />
+              <circle cx="12" cy="12" r="5.5" fill="none" stroke="#1c1c2e" stroke-width="0.8" />
+              <circle cx="12" cy="12" r="3.6" fill="var(--color-accent-2, #0f776e)" />
+              <circle cx="12" cy="12" r="1" fill="#050510" />
+              <rect x="12" y="4" width="1.4" height="2.4" fill="#00eeff" opacity="0.7" />
+            </svg>
+          </button>
+        </span>
+      </footer>
+
+    </div>
+
+    <!-- Player de música lofi -->
+    <aside class="music-player minimized" id="music-player" aria-label="Player de música lofi">
+      <div class="mp-header">
+        <span class="mp-header-title">♫ lofi_player.exe</span>
+        <button class="tb-btn" id="mp-minimize" title="Minimizar player" aria-label="Minimizar player">&#8211;</button>
+      </div>
+      <div class="mp-body">
+        <img class="mp-cover" id="mp-cover" src="assets/covers/cover-01.svg" alt="Capa do álbum">
+        <div class="mp-info">
+          <span class="mp-track" id="mp-track">—</span>
+          <span class="mp-artist" id="mp-artist">—</span>
+        </div>
+      </div>
+      <div class="mp-progress-row">
+        <span class="mp-time" id="mp-current">0:00</span>
+        <div class="mp-progress" id="mp-progress" role="slider" aria-label="Progresso da música">
+          <div class="mp-progress-fill" id="mp-progress-fill"></div>
+        </div>
+        <span class="mp-time" id="mp-duration">0:00</span>
+      </div>
+      <div class="mp-controls">
+        <button class="mp-btn" id="mp-prev" title="Anterior" aria-label="Música anterior">&#9198;</button>
+        <button class="mp-btn mp-btn-play" id="mp-play" title="Tocar/Pausar"
+          aria-label="Tocar ou pausar">&#9654;</button>
+        <button class="mp-btn" id="mp-next" title="Próxima" aria-label="Próxima música">&#9197;</button>
+      </div>
+      <div class="mp-volume-row">
+        <span class="mp-volume-icon" aria-hidden="true">🔊</span>
+        <input type="range" class="mp-volume" id="mp-volume" min="0" max="100" value="70" aria-label="Volume">
+      </div>
+    </aside>
+
+    <!-- Tela cheia da galeria -->
+    <div class="lightbox" id="lightbox" aria-label="Visualização de foto em tela cheia">
+      <button class="lb-btn lb-close" id="lb-close" title="Fechar" aria-label="Fechar tela cheia">&#10005;</button>
+      <button class="lb-btn lb-prev" id="lb-prev" title="Foto anterior" aria-label="Foto anterior">&#9664;</button>
+      <button class="lb-btn lb-next" id="lb-next" title="Próxima foto" aria-label="Próxima foto">&#9654;</button>
+      <figure class="lb-figure">
+        <img class="lb-img" id="lb-img" src alt>
+        <figcaption class="lb-caption" id="lb-caption"></figcaption>
+      </figure>
+      <button class="lb-btn lb-caption-toggle" id="lb-caption-toggle" title="Mostrar legenda"
+        aria-label="Mostrar ou esconder legenda">&#9650;</button>
+    </div>
+
+    <!-- Notificação "Tocando agora" -->
+    <div class="toast" id="toast" aria-live="polite">
+      <img class="toast-cover" id="toast-cover" src="assets/covers/cover-01.svg" alt>
+      <div class="toast-text">
+        <span class="toast-label">Tocando agora:</span>
+        <span class="toast-track" id="toast-track">—</span>
+      </div>
+    </div>
+
+    <!-- Modal "Sobre este site" -->
+    <div class="modal-overlay" id="modal-overlay">
+      <div class="modal-box">
+        <div class="modal-header">
+          <span>Sobre este site</span>
+          <button class="tb-btn tb-close" id="modal-close" aria-label="Fechar">&#10005;</button>
+        </div>
+        <div class="modal-body">
+          <p>Este portfólio foi construído com HTML, CSS e JavaScript puros, sem frameworks, inspirado na estética de um
+            explorador de arquivos retrô.</p>
+        </div>
+      </div>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script src="js/player.js"></script>
+    <script src="js/presence.js"></script>
+  </body>
+</html>

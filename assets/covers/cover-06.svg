@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" fill="#080815"/>
+  <!-- sol poente -->
+  <circle cx="46" cy="44" r="10" fill="#00eeff" opacity="0.9"/>
+  <rect x="34" y="46" width="24" height="2.5" fill="#080815"/>
+  <rect x="34" y="51" width="24" height="3" fill="#080815"/>
+  <!-- fios -->
+  <line x1="0" y1="18" x2="64" y2="14" stroke="#0f776e" stroke-width="1.2"/>
+  <line x1="0" y1="30" x2="64" y2="27" stroke="#0f776e" stroke-width="1.2"/>
+  <!-- pássaros pixelados no fio -->
+  <g fill="#f2f2f2">
+    <rect x="12" y="12.5" width="4" height="4"/>
+    <rect x="14" y="10.5" width="3" height="3"/>
+    <rect x="26" y="11.5" width="4" height="4"/>
+    <rect x="28" y="9.5" width="3" height="3"/>
+    <rect x="46" y="21.5" width="4" height="4"/>
+    <rect x="48" y="19.5" width="3" height="3"/>
+    <rect x="18" y="25" width="4" height="4"/>
+    <rect x="20" y="23" width="3" height="3"/>
+  </g>
+  <!-- pássaro voando -->
+  <g stroke="#f2f2f2" stroke-width="1.5" fill="none">
+    <path d="M50 8 L53 10 L56 8"/>
+    <path d="M38 4 L41 6 L44 4"/>
+  </g>
+  <!-- chão -->
+  <rect x="0" y="58" width="64" height="6" fill="#0a4a44"/>
+</svg>

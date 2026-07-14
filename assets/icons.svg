@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+  <symbol id="icon-folder" viewBox="0 0 16 16">
+    <path fill="currentColor" d="M1 3h5l1 1h8v9a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/>
+  </symbol>
+  <symbol id="icon-folder-open" viewBox="0 0 16 16">
+    <path fill="currentColor" d="M1 3h5l1 1h7a1 1 0 0 1 1 1v1H3l-2 6V4a1 1 0 0 1 1-1z"/>
+    <path fill="currentColor" d="M1.5 13 3 7h11.5a1 1 0 0 1 .97 1.24l-1.2 4.76a1 1 0 0 1-.97.76H2.4a1 1 0 0 1-.9-1z"/>
+  </symbol>
+  <symbol id="icon-file" viewBox="0 0 16 16">
+    <path fill="currentColor" d="M3 1h6l4 4v10a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"/>
+    <path fill="#080815" d="M9 1v4h4z"/>
+  </symbol>
+</svg>
