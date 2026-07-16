@@ -130,6 +130,10 @@
     sendBtn.disabled = true;
     sendBtn.textContent = 'Enviando...';
 
+    // Grava o cooldown ANTES do insert: fecha a corrida de envios
+    // duplos enquanto a primeira requisição ainda está no ar
+    localStorage.setItem('fb-last-sent', String(Date.now()));
+
     const { data, error } = await client
       .from('feedbacks')
       .insert({ name, message })
@@ -140,13 +144,12 @@
     sendBtn.textContent = 'Enviar ➤';
 
     if (error) {
+      localStorage.removeItem('fb-last-sent'); // devolve a chance de tentar já
       countEl.textContent = /Muitas mensagens/.test(error.message)
         ? 'muitas mensagens agora — tente em instantes'
         : 'não foi possível enviar — tente de novo';
       return;
     }
-
-    localStorage.setItem('fb-last-sent', String(Date.now()));
     setStatus('');
     addMessage(data); // o evento realtime duplicado é ignorado pelo Set de ids
     scrollToBottom();
