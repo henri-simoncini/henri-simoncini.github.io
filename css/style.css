@@ -826,6 +826,74 @@ button {
   transform: translateY(-1px);
 }
 
+/* ---------- Mural de feedbacks (chat) ---------- */
+.fb-chat {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 380px;
+  overflow-y: auto;
+  background: var(--color-bg-sunken);
+  border: 1px solid var(--color-accent-2);
+  padding: 14px;
+  margin: 16px 0 22px;
+}
+
+.fb-msg {
+  background: var(--color-bg-raised);
+  border: 1px solid rgba(var(--color-accent-2-rgb), 0.5);
+  border-left: 3px solid var(--color-accent);
+  padding: 8px 12px;
+  max-width: 85%;
+  animation: fadeInUp 0.25s ease;
+}
+
+.fb-msg-name {
+  display: block;
+  font-family: var(--font-alt);
+  font-size: 0.85rem;
+  color: var(--color-accent);
+}
+
+.fb-msg-time {
+  font-family: var(--font-body);
+  font-size: 0.6rem;
+  color: var(--color-accent-2);
+  margin-left: 8px;
+}
+
+.fb-msg-text {
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  color: rgba(var(--color-fg-rgb), 0.9);
+  margin: 3px 0 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+  line-height: 1.5;
+}
+
+.fb-status {
+  font-family: var(--font-alt);
+  font-size: 0.78rem;
+  color: var(--color-accent-2);
+  margin: 0;
+}
+
+.fb-form-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.fb-form-footer .cf-submit { margin-top: 0; align-self: center; }
+
+.fb-count {
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  color: var(--color-accent-2);
+}
+
 .content-pane p {
   line-height: 1.7;
   font-size: 0.95rem;

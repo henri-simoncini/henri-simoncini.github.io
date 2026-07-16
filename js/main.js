@@ -570,8 +570,10 @@
   const contactForm = document.getElementById('contact-form');
   const WHATSAPP_NUMBER = '5522981600830';
 
-  ['cf-name', 'cf-subject', 'cf-message'].forEach((id) => {
-    document.getElementById(id).addEventListener('keydown', (e) => {
+  ['cf-name', 'cf-subject', 'cf-message', 'fb-name', 'fb-message'].forEach((id) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.addEventListener('keydown', (e) => {
       if (e.key.length === 1 || e.key === 'Backspace' || e.key === 'Delete' || e.key === 'Enter') {
         playType();
       }
