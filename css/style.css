@@ -181,16 +181,6 @@ button {
   color: var(--color-accent);
 }
 
-.hamburger {
-  display: none;
-  margin-left: auto;
-  background: transparent;
-  border: 1px solid var(--color-accent-2);
-  color: var(--color-fg);
-  width: 30px;
-  height: 26px;
-}
-
 /* ---------- Dropdowns do menu ---------- */
 .menu-wrap { position: relative; }
 
@@ -288,6 +278,9 @@ button {
 .explorer-window.intro-mode .sidebar,
 .explorer-window.intro-mode .content-pane { display: none; }
 
+/* File — barra lateral recolhida (desktop) */
+.explorer-window.sidebar-collapsed .sidebar { display: none; }
+
 .intro-box {
   position: relative;
   max-width: 640px;
@@ -331,6 +324,32 @@ button {
 @keyframes hintBounce {
   from { transform: translateY(0); }
   to { transform: translateY(4px); }
+}
+
+/* ---------- Seta indicativa do File (só mobile) ---------- */
+.file-hint {
+  display: none;
+  position: absolute;
+  top: calc(100% + 3px);
+  left: 50%;
+  margin-left: -0.5em;
+  color: var(--color-accent);
+  font-size: 0.85rem;
+  text-shadow: 0 0 6px rgba(var(--color-accent-rgb), 0.6);
+  pointer-events: none;
+  z-index: 55;
+}
+
+@media (max-width: 768px) {
+  .file-hint.active {
+    display: block;
+    animation: hintBounce 0.7s ease infinite alternate;
+  }
+}
+
+/* Sem animação para quem prefere movimento reduzido — a seta permanece */
+@media (prefers-reduced-motion: reduce) {
+  .file-hint.active { animation: none; }
 }
 
 /* ============================================
@@ -1467,8 +1486,6 @@ body.player-disabled .vinyl-btn { display: none; }
    ============================================ */
 @media (max-width: 768px) {
   .explorer-window { width: 100vw; height: 100dvh; border: none; }
-
-  .hamburger { display: flex; align-items: center; justify-content: center; width: 26px; height: 22px; }
 
   /* Barra de título: sem quebra de linha */
   .title-text {

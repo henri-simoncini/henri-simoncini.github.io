@@ -26,7 +26,7 @@
           <span class="title-text">Henrique Simoncini — Portfólio.exe</span>
         </div>
         <div class="title-bar-buttons">
-          <button class="tb-btn tb-min" id="btn-minimize" title="Minimizar" aria-label="Minimizar">&#8211;</button>
+          <button class="tb-btn tb-min" id="btn-minimize" title="Alternar apresentação" aria-label="Alternar entre apresentação e explorador">&#8211;</button>
           <button class="tb-btn tb-max" id="btn-maximize" title="Maximizar" aria-label="Maximizar">&#9633;</button>
           <button class="tb-btn tb-close" id="btn-close" title="Fechar" aria-label="Fechar">&#10005;</button>
         </div>
@@ -36,6 +36,7 @@
       <nav class="menu-bar">
         <div class="menu-wrap">
           <span class="menu-item" id="menu-file">File</span>
+          <span class="file-hint" id="file-hint" aria-hidden="true">▲</span>
         </div>
         <div class="menu-wrap">
           <span class="menu-item" id="menu-edit">Edit</span>
@@ -84,7 +85,6 @@
         <div class="menu-wrap">
           <span class="menu-item" id="menu-help">Help</span>
         </div>
-        <button class="hamburger" id="btn-hamburger" aria-label="Abrir menu de pastas">&#9776;</button>
       </nav>
 
       <!-- Barra de caminho + busca -->
@@ -97,7 +97,7 @@
 
         <!-- Tela de apresentação (modo intro) -->
         <section class="intro-screen" id="intro-screen">
-          <div class="intro-box">
+          <div class="intro-box" role="button" tabindex="0" aria-label="Avançar apresentação">
             <p class="intro-text" id="intro-text-1"></p>
             <p class="intro-text intro-text-2" id="intro-text-2"></p>
             <span class="intro-hint" id="intro-hint" aria-hidden="true">▼</span>
