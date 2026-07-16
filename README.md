@@ -31,7 +31,8 @@ Definidas como variáveis CSS no topo de `css/style.css`:
 As fontes são carregadas via Google Fonts no `<head>` do `index.html`.
 
 ## Menus da barra superior
-- **File** — alterna entre a tela de apresentação (texto digitado estilo Pokémon) e o explorador de arquivos. O site abre na apresentação.
+- **File** — abre/fecha a barra lateral de pastas.
+- **Botão – (minimizar) na barra de título** — alterna entre a tela de apresentação (texto digitado estilo Pokémon) e o explorador. O site abre na apresentação; a caixa da apresentação também avança ao ser clicada (ou Enter/Espaço).
 - **Edit** — alternar tema claro/escuro e trocar a cor principal (9 opções: ciano, laranja, vermelho, monocromático, verde, azul, amarelo, roxo, rosa). As escolhas ficam salvas no navegador (localStorage).
 - **View** — baixar o currículo em PDF (`assets/curriculo-henrique-simoncini.pdf`) e visualizar os cartões de estatísticas do GitHub dentro do explorador.
 - **Favorites** — links para projetos favoritos (Ficha Lunaris e Outlast Fanpage).
@@ -47,7 +48,7 @@ A pasta **Galeria de Fotos** na árvore abre um mosaico com 5 blocos de 4 fotos 
 **Tela cheia:** clicar em qualquer foto abre o lightbox — imagem com borda na cor principal, botões ◀ ▶ para navegar (com animação de deslize direcional), ✕ para fechar e ▲ no canto inferior direito para mostrar/esconder a legenda sobre a imagem. Também funciona com as setas do teclado e Esc.
 
 ## Cursor pixelado
-O site usa um cursor de seta pixelado (estilo Windows clássico) na cor principal e a clássica **mãozinha branca do Windows** nos itens clicáveis, desenhada pixel a pixel (mapa `HAND_MAP` em `js/main.js`). A seta e o favicon acompanham a cor principal via `updateAccentAssets`.
+O site usa um cursor de seta pixelado (estilo Windows clássico) e a mãozinha clássica nos itens clicáveis (mapa `HAND_MAP` em `js/main.js`). Ambos têm **preenchimento na cor principal** escolhida e **contorno preto fixo** (independente do tema), atualizados ao vivo junto com o favicon via `updateAccentAssets`.
 
 ## Presença em tempo real (estilo Discord)
 O cartão de perfil na página inicial mostra sua foto, status ("Online agora", "Ausente"...), sua **Nota** (status personalizado do Discord) e suas atividades: o que está ouvindo no Spotify, jogando ou programando — tudo em tempo real via [Lanyard](https://github.com/Phineas/lanyard), sem backend próprio.
@@ -65,7 +66,16 @@ O cartão de perfil na página inicial mostra sua foto, status ("Online agora", 
 - 🎮 **Jogando** — o Discord detecta jogos automaticamente (ative "Compartilhar atividade" em Configurações → Privacidade de atividade). No hover, aparece **"🎮 Juntar-se à partida"**, levando ao seu perfil da Steam (URL na constante `STEAM_URL` em `js/presence.js`).
 - 💻 **Programando** — instale uma extensão de Discord Rich Presence no VS Code (ex: "Discord Presence") e o site mostra o que você está codando.
 
-Enquanto `DISCORD_USER_ID` estiver vazio, o cartão mostra "Online agora" fixo, sem atividades.
+**Como funciona por baixo:** o site conecta no **WebSocket** do Lanyard (`wss://api.lanyard.rest/socket`) com heartbeat e reconexão automática (backoff até 60s) — as mudanças aparecem em ~1 segundo, sem recarregar. Se o socket cair ou não conectar em 10s, cai para **REST polling** (30s) enquanto tenta reconectar. Se tudo falhar, o cartão fica no estado padrão ("Online agora") sem quebrar a página.
+
+**Casos especiais:**
+- **Online só pelo celular**: o Discord mobile não transmite atividade, então em vez de um cartão vazio o status mostra **"Online (mobile)"**.
+- **Status manual com o PC desligado (Lanyard KV)**: defina a chave `status` na KV do Lanyard e, quando você estiver offline, o site mostra esse texto no lugar de "Offline". Para configurar: mande DM ao bot Lanyard com `.apikey`, depois `PUT https://api.lanyard.rest/v1/users/SEU_ID/kv/status` com o header `Authorization: SUA_APIKEY` e o texto no corpo. Exemplo:
+  ```
+  curl -X PUT "https://api.lanyard.rest/v1/users/542359265923301386/kv/status" -H "Authorization: SUA_APIKEY" -d "voltei às 18h 🕹️"
+  ```
+
+Enquanto `DISCORD_USER_ID` estiver vazio, o cartão mostra "Online agora" fixo, sem atividades. Para depurar: `window.lanyardPresence` no console mostra o modo de conexão (`ws`/`rest`) e o último update; `window.lanyardPresence._render(dados)` permite simular estados.
 
 ## Música e sons
 - **Som de clique**: `assets/sounds/click.mp3`, tocado em qualquer clique de item interativo via WebAudio (baixa latência).

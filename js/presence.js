@@ -2,15 +2,25 @@
   // ============================================
   // Presença em tempo real via Lanyard (Discord)
   //
-  // COMO ATIVAR:
-  // 1. Entre no servidor Discord do Lanyard: https://discord.gg/lanyard
-  //    (é só entrar — o bot passa a monitorar sua presença)
-  // 2. No Discord: Configurações → Avançado → ative "Modo desenvolvedor"
-  // 3. Clique com o botão direito no seu nome → "Copiar ID do usuário"
-  // 4. Cole o ID na constante abaixo:
+  // Tempo real de verdade: WebSocket do Lanyard com heartbeat e
+  // reconexão automática. Se o WebSocket falhar, cai para REST
+  // (polling) e continua tentando reconectar o socket.
+  //
+  // Status manual quando o PC estiver desligado (Lanyard KV):
+  // 1. No Discord, mande DM para o bot Lanyard: .apikey
+  // 2. Defina a chave "status":
+  //    PUT https://api.lanyard.rest/v1/users/SEU_ID/kv/status
+  //    header Authorization: SUA_APIKEY, corpo = o texto do status
+  // 3. Quando você estiver offline, o site mostra esse texto.
   // ============================================
-  const DISCORD_USER_ID = '542359265923301386'; // ex: '123456789012345678'
-  const POLL_INTERVAL_MS = 20000;
+  const DISCORD_USER_ID = '542359265923301386';
+  const REST_URL = `https://api.lanyard.rest/v1/users/${DISCORD_USER_ID}`;
+  const WS_URL = 'wss://api.lanyard.rest/socket';
+  const POLL_INTERVAL_MS = 30000;
+  const WS_CONNECT_TIMEOUT_MS = 10000;
+
+  // Perfil da Steam para o "Juntar-se à partida"
+  const STEAM_URL = 'https://steamcommunity.com/profiles/76561198886933280/';
 
   const statusDot = document.getElementById('status-dot');
   const statusText = document.getElementById('profile-status');
@@ -24,16 +34,13 @@
     offline: { label: 'Offline', color: '#80848e' },
   };
 
-  function setStatus(key) {
+  function setStatus(key, labelOverride) {
     const s = STATUS_MAP[key] || STATUS_MAP.offline;
     statusDot.style.background = s.color;
-    statusDot.title = s.label;
-    statusText.textContent = s.label;
+    statusDot.title = labelOverride || s.label;
+    statusText.textContent = labelOverride || s.label;
     statusDot.classList.toggle('pulse', key === 'online');
   }
-
-  // Perfil da Steam para o "Juntar-se à partida"
-  const STEAM_URL = 'https://steamcommunity.com/profiles/76561198886933280/';
 
   function activityRow(icon, label, detail, imgUrl, action) {
     const row = document.createElement('div');
@@ -84,7 +91,7 @@
   }
 
   function render(data) {
-    setStatus(data.discord_status);
+    if (!data) return;
 
     // Nota (status personalizado do Discord)
     const custom = (data.activities || []).find((a) => a.type === 4);
@@ -97,9 +104,11 @@
     }
 
     activitiesEl.innerHTML = '';
+    let renderable = 0;
 
     // Ouvindo Spotify → "Ouvir junto" abre a mesma faixa
     if (data.listening_to_spotify && data.spotify) {
+      renderable++;
       const trackUrl = data.spotify.track_id
         ? `https://open.spotify.com/track/${data.spotify.track_id}`
         : null;
@@ -116,6 +125,7 @@
     (data.activities || [])
       .filter((a) => a.type === 0)
       .forEach((a) => {
+        renderable++;
         const isCoding = /visual studio code|vs ?code|intellij|pycharm|neovim|sublime/i.test(a.name);
         const detail = [a.details, a.state].filter(Boolean).join(' · ');
         activitiesEl.appendChild(activityRow(
@@ -126,11 +136,30 @@
           isCoding ? null : { href: STEAM_URL, label: '🎮 Juntar-se à partida' }
         ));
       });
+
+    // Casos especiais de status:
+    // 1. Online só pelo celular, sem atividades (Discord mobile não
+    //    transmite atividade) → "Online (mobile)"
+    // 2. Offline com status manual definido na Lanyard KV → mostra o texto
+    let labelOverride = null;
+    if (data.discord_status === 'online' && data.active_on_discord_mobile && renderable === 0) {
+      labelOverride = 'Online (mobile)';
+    }
+    if (data.discord_status === 'offline' && data.kv && data.kv.status) {
+      labelOverride = String(data.kv.status).slice(0, 60);
+    }
+
+    setStatus(data.discord_status, labelOverride);
+
+    window.lanyardPresence.lastUpdate = Date.now();
   }
 
-  async function poll() {
+  // ---------- REST (fallback) ----------
+  let pollTimer = null;
+
+  async function pollOnce() {
     try {
-      const res = await fetch(`https://api.lanyard.rest/v1/users/${DISCORD_USER_ID}`);
+      const res = await fetch(REST_URL);
       const json = await res.json();
       if (json.success) render(json.data);
     } catch (e) {
@@ -138,11 +167,78 @@
     }
   }
 
+  function startPolling() {
+    if (pollTimer) return;
+    window.lanyardPresence.mode = 'rest';
+    pollOnce();
+    pollTimer = setInterval(pollOnce, POLL_INTERVAL_MS);
+  }
+
+  function stopPolling() {
+    clearInterval(pollTimer);
+    pollTimer = null;
+  }
+
+  // ---------- WebSocket (tempo real) ----------
+  let heartbeatTimer = null;
+  let reconnectDelay = 3000;
+
+  function connectWS() {
+    let ws;
+    try {
+      ws = new WebSocket(WS_URL);
+    } catch (e) {
+      startPolling();
+      return;
+    }
+
+    // Se não conectar a tempo, fecha e deixa o onclose cuidar do fallback
+    const connectTimeout = setTimeout(() => {
+      if (ws.readyState !== WebSocket.OPEN) ws.close();
+    }, WS_CONNECT_TIMEOUT_MS);
+
+    ws.onmessage = (ev) => {
+      let msg;
+      try { msg = JSON.parse(ev.data); } catch (e) { return; }
+
+      if (msg.op === 1) {
+        // Hello: inicia heartbeat e assina a presença
+        clearTimeout(connectTimeout);
+        clearInterval(heartbeatTimer);
+        heartbeatTimer = setInterval(() => {
+          if (ws.readyState === WebSocket.OPEN) ws.send(JSON.stringify({ op: 3 }));
+        }, msg.d.heartbeat_interval);
+        ws.send(JSON.stringify({ op: 2, d: { subscribe_to_id: DISCORD_USER_ID } }));
+        window.lanyardPresence.mode = 'ws';
+        stopPolling();
+        reconnectDelay = 3000;
+      } else if (msg.op === 0 && (msg.t === 'INIT_STATE' || msg.t === 'PRESENCE_UPDATE')) {
+        render(msg.d);
+      }
+    };
+
+    ws.onclose = () => {
+      clearTimeout(connectTimeout);
+      clearInterval(heartbeatTimer);
+      // Enquanto o socket estiver fora, o REST segura o tempo "quase real"
+      startPolling();
+      setTimeout(connectWS, reconnectDelay);
+      reconnectDelay = Math.min(reconnectDelay * 2, 60000);
+    };
+
+    ws.onerror = () => {
+      try { ws.close(); } catch (e) {}
+    };
+  }
+
+  // ---------- Inicialização ----------
+  // _render fica exposto para depuração (testar estados manualmente)
+  window.lanyardPresence = { mode: 'none', lastUpdate: 0, _render: render };
+
+  // Estado padrão até chegar dado real (nunca quebra a página)
+  setStatus('online');
+
   if (DISCORD_USER_ID) {
-    poll();
-    setInterval(poll, POLL_INTERVAL_MS);
-  } else {
-    // Sem Discord configurado: mostra status estático
-    setStatus('online');
+    connectWS();
   }
 })();

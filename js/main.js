@@ -69,7 +69,7 @@
 
   const CLICKABLE = [
     '.file-label', '.folder-label', '.menu-item', '.tb-btn', '.tag-link',
-    '.fv-link', '.hamburger', '.mp-btn', '.vinyl-btn', '.mp-progress',
+    '.fv-link', '.mp-btn', '.vinyl-btn', '.mp-progress',
     '.dd-item', '.swatch', '.toast', '.intro-box', '.g-item', '.lb-btn',
   ].join(',');
 
@@ -213,7 +213,7 @@
   // File — tela de apresentação (typewriter)
   // ============================================
   const INTRO_TEXT_1 = 'Este site foi criado para apresentar os projetos de um jovem técnico em informática, apaixonado por desenvolvimento web, design e tecnologia. Aqui você encontra minha trajetória, minhas habilidades e as coisas que eu mais gosto de construir.';
-  const INTRO_TEXT_2 = 'Vamos começar? Clique no botão File na barra superior para iniciar.';
+  const INTRO_TEXT_2 = 'Vamos começar? Clique nesta caixa para iniciar.';
   const TYPE_SPEED_MS = 26;
 
   const introText1 = document.getElementById('intro-text-1');
@@ -265,37 +265,68 @@
     introHint.classList.add('visible');
   }
 
-  // Clique na caixa durante a digitação → completa na hora
-  introBox.addEventListener('click', () => {
+  // Avanço da apresentação (estilo Pokémon):
+  // 1º clique durante a digitação → completa o texto na hora;
+  // clique com o texto completo → entra no explorador.
+  function advanceIntro() {
     if (introText2.textContent !== INTRO_TEXT_2) {
       typeToken++;
       introText1.textContent = INTRO_TEXT_1;
       introText2.textContent = INTRO_TEXT_2;
       introHint.classList.add('visible');
+    } else {
+      leaveIntro();
+    }
+  }
+
+  introBox.addEventListener('click', advanceIntro);
+
+  // Enter e Espaço também avançam (acessibilidade/teclado)
+  document.addEventListener('keydown', (e) => {
+    if (!explorerWindow.classList.contains('intro-mode')) return;
+    if (e.target instanceof Element && e.target.closest('input, textarea')) return;
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      advanceIntro();
     }
   });
 
   function enterIntro() {
     explorerWindow.classList.add('intro-mode');
     setPath('C:\\Portfólio\\Apresentação.txt');
+    fileHint.classList.remove('active');
     startIntroTyping();
   }
 
   function leaveIntro() {
     typeToken++;
     explorerWindow.classList.remove('intro-mode');
+    showFileHintIfNeeded();
     const active = tree.querySelector('.file.active');
     setPath(active ? active.dataset.path : 'C:\\Portfólio');
     const activeView = document.querySelector('.file-view.active');
     if (activeView) animateTitle(activeView);
   }
 
+  // File — abre/fecha a barra lateral
+  // Seta indicativa (mobile): aparece ao sair da apresentação
+  // e some para sempre no primeiro clique no File
+  const fileHint = document.getElementById('file-hint');
+
+  function showFileHintIfNeeded() {
+    if (!localStorage.getItem('hasOpenedSidebar')) {
+      fileHint.classList.add('active');
+    }
+  }
+
   document.getElementById('menu-file').addEventListener('click', () => {
     closeAllDropdowns();
-    if (explorerWindow.classList.contains('intro-mode')) {
-      leaveIntro();
+    localStorage.setItem('hasOpenedSidebar', '1');
+    fileHint.classList.remove('active');
+    if (window.matchMedia('(max-width: 768px)').matches) {
+      sidebar.classList.toggle('drawer-open');
     } else {
-      enterIntro();
+      explorerWindow.classList.toggle('sidebar-collapsed');
     }
   });
 
@@ -367,9 +398,10 @@
   function updateAccentAssets() {
     const accent = getComputedStyle(document.documentElement)
       .getPropertyValue('--color-accent').trim();
-    const outline = '#05050f';
+    // Contorno sempre preto, independente do tema
+    const outline = '#080815';
     const arrow = encodeURIComponent(pixelArrowSVG(accent, outline));
-    const hand = encodeURIComponent(pixelHandSVG('#f2f2f2', outline));
+    const hand = encodeURIComponent(pixelHandSVG(accent, outline));
     cursorStyle.textContent = `
       * { cursor: url("data:image/svg+xml,${arrow}") 2 1, auto; }
       a, button, .file-label, .folder-label, .menu-item, .tag-link, .fv-link,
@@ -445,13 +477,6 @@
 
   // Sincroniza o rótulo quando o player carrega o estado salvo
   window.addEventListener('lofi-player-ready', syncPlayerToggleLabel);
-
-  // ============================================
-  // Menu hamburger (mobile)
-  // ============================================
-  document.getElementById('btn-hamburger').addEventListener('click', () => {
-    sidebar.classList.toggle('drawer-open');
-  });
 
   // ============================================
   // Modal "Sobre este site"
@@ -569,12 +594,13 @@
     explorerWindow.classList.toggle('is-maximized');
   });
 
+  // Minimizar — alterna entre a Apresentação.txt e o explorador
   document.getElementById('btn-minimize').addEventListener('click', () => {
-    const mainArea = document.querySelector('.main-area');
-    const statusBar = document.querySelector('.status-bar');
-    const minimized = explorerWindow.classList.toggle('is-minimized');
-    mainArea.style.display = minimized ? 'none' : 'flex';
-    statusBar.style.display = minimized ? 'none' : 'flex';
+    if (explorerWindow.classList.contains('intro-mode')) {
+      leaveIntro();
+    } else {
+      enterIntro();
+    }
   });
 
   document.getElementById('btn-close').addEventListener('click', () => {
