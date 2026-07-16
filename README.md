@@ -77,6 +77,18 @@ O cartão de perfil na página inicial mostra sua foto, status ("Online agora", 
 
 Enquanto `DISCORD_USER_ID` estiver vazio, o cartão mostra "Online agora" fixo, sem atividades. Para depurar: `window.lanyardPresence` no console mostra o modo de conexão (`ws`/`rest`) e o último update; `window.lanyardPresence._render(dados)` permite simular estados.
 
+## Feedbacks (mural em tempo real)
+A pasta **Feedbacks** abre um mural estilo chat: mensagens dos visitantes em cima (nome + recado + horário) e o formulário abaixo. Novas mensagens aparecem **em tempo real** para todos os visitantes conectados, via Supabase Realtime (WebSocket).
+
+**Infra:** Supabase (Postgres) no tier gratuito. O schema e as políticas estão em `supabase/feedbacks.sql` — rode no SQL Editor do painel. Segurança:
+- **RLS**: leitura e envio públicos; UPDATE/DELETE **negados** (sem policy) — ninguém edita ou apaga mensagens pela chave pública.
+- **Validação dupla**: limites de caracteres no cliente (40 nome / 500 mensagem) e no banco (`check`).
+- **Anti-XSS**: as mensagens são renderizadas com `textContent` (nunca `innerHTML`).
+- **Anti-spam**: cooldown de 30s por visitante (localStorage) + trigger no banco limitando 10 mensagens/minuto no total.
+- **Chaves**: o `js/feedbacks.js` contém apenas a *publishable/anon key*, que é pública por design (a proteção é a RLS). A `service_role` key e a senha do banco nunca vão para o código.
+
+Para apagar uma mensagem indesejada: painel do Supabase → Table Editor → `feedbacks` → delete na linha (a chave pública não consegue, mas você como dono consegue).
+
 ## Música e sons
 - **Som de clique**: `assets/sounds/click.mp3`, tocado em qualquer clique de item interativo via WebAudio (baixa latência).
 - **Som de digitação**: `assets/sounds/type.mp3`, tocado a cada tecla na barra de pesquisa e no formulário de contato, e também durante as animações de texto (tela de apresentação e títulos das páginas). O arquivo tem várias batidas de teclado; o `js/main.js` sorteia uma batida por vez (posições mapeadas no array `TYPE_HITS`.

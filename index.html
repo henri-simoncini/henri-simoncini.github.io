@@ -233,6 +233,22 @@
               </ul>
             </li>
 
+            <li class="folder" data-name="feedbacks">
+              <span class="folder-label">
+                <svg class="node-icon folder-icon" width="14" height="14"><use
+                    href="assets/icons.svg#icon-folder"></use></svg>
+                <span class="folder-name">Feedbacks</span>
+              </span>
+              <ul class="folder-children">
+                <li class="file" data-target="feedbacks" data-path="C:\Portfólio\Feedbacks\feedbacks.txt">
+                  <span class="file-label">
+                    <svg class="node-icon" width="14" height="14"><use href="assets/icons.svg#icon-file"></use></svg>
+                    <span class="file-name">feedbacks</span><span class="ext-badge">.txt</span>
+                  </span>
+                </li>
+              </ul>
+            </li>
+
             <li class="folder" data-name="contato">
               <span class="folder-label">
                 <svg class="node-icon folder-icon" width="14" height="14"><use
@@ -699,6 +715,29 @@
                 completo no GitHub →</a></p>
           </article>
 
+          <article class="file-view" data-file="feedbacks">
+            <h1 class="fv-title">Feedbacks</h1>
+            <h2 class="fv-subtitle">Mural de recados</h2>
+            <p>Deixe um recado, uma crítica ou uma opinião aleatória — as mensagens aparecem aqui em tempo real, para todo mundo que estiver visitando.</p>
+
+            <div class="fb-chat" id="fb-chat" aria-live="polite">
+              <p class="fb-status" id="fb-status">Carregando mensagens...</p>
+            </div>
+
+            <form class="contact-form fb-form" id="fb-form">
+              <label class="cf-label" for="fb-name">Seu nome</label>
+              <input class="cf-input" id="fb-name" type="text" maxlength="40" required placeholder="Como você se chama?">
+
+              <label class="cf-label" for="fb-message">Mensagem</label>
+              <textarea class="cf-textarea" id="fb-message" maxlength="500" rows="3" required placeholder="O que você está pensando?"></textarea>
+
+              <div class="fb-form-footer">
+                <span class="fb-count" id="fb-count">0/500</span>
+                <button class="cf-submit" type="submit" id="fb-send">Enviar ➤</button>
+              </div>
+            </form>
+          </article>
+
           <article class="file-view" data-file="contato">
             <h1 class="fv-title">Contato</h1>
             <h2 class="fv-subtitle">Entre em contato</h2>
@@ -835,5 +874,7 @@
     <script src="js/main.js"></script>
     <script src="js/player.js"></script>
     <script src="js/presence.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <script src="js/feedbacks.js"></script>
   </body>
 </html>
