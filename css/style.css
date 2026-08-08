@@ -1218,6 +1218,81 @@ body.player-disabled .vinyl-btn { display: none; }
 /* Quando o player está aberto, o toast sobe para não cobri-lo */
 .music-player:not(.minimized) ~ .toast { bottom: 300px; }
 
+/* ---------- inDash: apresentação em duas colunas ---------- */
+.file-view[data-file="projeto1"] { max-width: 1100px; }
+
+.indash-layout {
+  display: flex;
+  gap: 28px;
+  align-items: flex-start;
+}
+
+.indash-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.indash-side {
+  width: 300px;
+  flex-shrink: 0;
+}
+
+.indash-flyer {
+  display: block;
+  width: 100%;
+  border: 1px solid var(--color-accent-2);
+  box-shadow: 0 0 22px rgba(var(--color-accent-rgb), 0.15);
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+
+.indash-flyer:hover {
+  box-shadow: 0 0 30px rgba(var(--color-accent-rgb), 0.3);
+  transform: translateY(-2px);
+}
+
+/* ---------- Telas do projeto ---------- */
+.shot-list {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  margin-top: 18px;
+}
+
+.shot {
+  margin: 0;
+  background: var(--color-bg-raised);
+  border: 1px solid rgba(var(--color-accent-2-rgb), 0.5);
+  padding: 10px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.shot:hover {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 16px rgba(var(--color-accent-rgb), 0.18);
+}
+
+.shot img {
+  display: block;
+  width: 100%;
+  border: 1px solid var(--color-accent-2);
+}
+
+.shot-narrow img {
+  width: auto;
+  max-width: 100%;
+  max-height: 560px;
+  margin: 0 auto;
+}
+
+.shot figcaption {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  color: var(--color-accent-2);
+  line-height: 1.6;
+  margin-top: 8px;
+  text-align: center;
+}
+
 /* ---------- Designs (linhas intercaladas) ---------- */
 .file-view[data-file="designs"] { max-width: 1100px; }
 
@@ -1651,6 +1726,13 @@ body.player-disabled .vinyl-btn { display: none; }
     opacity: 1;
     transform: none;
   }
+
+  /* inDash: flyer desce para baixo do texto no celular */
+  .indash-layout { flex-direction: column; }
+
+  .indash-side { width: 100%; }
+
+  .shot figcaption { font-size: 0.7rem; }
 
   /* Designs: empilha imagem sobre o texto no celular */
   .design-item,

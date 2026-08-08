@@ -70,7 +70,7 @@
   const CLICKABLE = [
     '.file-label', '.folder-label', '.menu-item', '.tb-btn', '.tag-link',
     '.fv-link', '.mp-btn', '.vinyl-btn', '.mp-progress',
-    '.dd-item', '.swatch', '.toast', '.intro-box', '.g-item', '.lb-btn',
+    '.dd-item', '.swatch', '.toast', '.intro-box', '.g-item', '.shot', '.lb-btn',
   ].join(',');
 
   document.addEventListener('click', (e) => {
@@ -503,15 +503,27 @@
   const lbImg = document.getElementById('lb-img');
   const lbCaption = document.getElementById('lb-caption');
   const lbCaptionToggle = document.getElementById('lb-caption-toggle');
-  const galleryFigures = [...document.querySelectorAll('.gallery .g-item')];
-  const galleryData = galleryFigures.map((f) => ({
-    src: f.querySelector('img').getAttribute('src'),
-    alt: f.querySelector('img').getAttribute('alt') || '',
-    caption: (f.querySelector('figcaption') || {}).textContent || '',
-  }));
+  // Cada grupo (galeria de fotos, telas do inDash...) navega separado:
+  // a lista é montada a partir do container da figura clicada.
+  const LB_GROUPS = '.gallery, .shot-list';
+  const LB_ITEMS = '.g-item, .shot';
+
+  let galleryData = [];
   let lbIndex = 0;
 
+  function collectGroup(fig) {
+    const container = fig.closest(LB_GROUPS) || document;
+    const figures = [...container.querySelectorAll(LB_ITEMS)];
+    galleryData = figures.map((f) => ({
+      src: f.querySelector('img').getAttribute('src'),
+      alt: f.querySelector('img').getAttribute('alt') || '',
+      caption: (f.querySelector('figcaption') || {}).textContent.trim() || '',
+    }));
+    return figures.indexOf(fig);
+  }
+
   function lbShow(index, direction = 0) {
+    if (!galleryData.length) return;
     lbIndex = (index + galleryData.length) % galleryData.length;
     const item = galleryData[lbIndex];
     lbImg.src = item.src;
@@ -530,7 +542,8 @@
     lbCaptionToggle.title = visible ? 'Esconder legenda' : 'Mostrar legenda';
   }
 
-  function lbOpen(index) {
+  function lbOpen(fig) {
+    const index = collectGroup(fig);
     lbSetCaptionVisible(false);
     lbShow(index);
     lightbox.classList.add('open');
@@ -540,8 +553,8 @@
     lightbox.classList.remove('open');
   }
 
-  galleryFigures.forEach((f, i) => {
-    f.addEventListener('click', () => lbOpen(i));
+  document.querySelectorAll(LB_ITEMS).forEach((f) => {
+    f.addEventListener('click', () => lbOpen(f));
   });
 
   document.getElementById('lb-close').addEventListener('click', lbClose);
