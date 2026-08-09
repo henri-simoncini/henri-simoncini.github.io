@@ -505,7 +505,7 @@
   const lbCaptionToggle = document.getElementById('lb-caption-toggle');
   // Cada grupo (galeria de fotos, telas do inDash...) navega separado:
   // a lista é montada a partir do container da figura clicada.
-  const LB_GROUPS = '.gallery, .step-list';
+  const LB_GROUPS = '.gallery, .screen-cards';
   const LB_ITEMS = '.g-item, .shot';
 
   let galleryData = [];

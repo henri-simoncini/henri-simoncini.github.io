@@ -1250,61 +1250,63 @@ body.player-disabled .vinyl-btn { display: none; }
   transform: translateY(-2px);
 }
 
-/* ---------- Telas do projeto (blocos alternados) ---------- */
-.step-list {
-  display: flex;
-  flex-direction: column;
-  gap: 34px;
+/* ---------- Telas do projeto (cards) ---------- */
+.screen-cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 30px 24px;
   margin-top: 24px;
 }
 
-/* align-items: stretch (padrão) faz a imagem e a caixa de texto
-   crescerem juntas até a altura do mais alto dos dois */
-.step {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px 22px;
+/* Coluna flex para o "Visualizar" descer ao rodape do card */
+.screen-card {
+  display: flex;
+  flex-direction: column;
 }
 
-/* Ímpar: imagem à esquerda, cabeçalho + texto à direita */
-/* Texto sempre à esquerda, imagem à direita */
-.step-head { grid-column: 1; grid-row: 1; }
-.step-text { grid-column: 1; grid-row: 2; }
-.step .shot { grid-column: 2; grid-row: 2; }
-
-.step-title {
+.card-title {
   font-family: var(--font-alt);
   font-size: 1.15rem;
   color: var(--color-accent);
-  margin: 0 0 2px;
+  margin: 14px 0 2px;
 }
 
-.step-sub {
+.card-sub {
   font-family: var(--font-body);
   font-size: 0.72rem;
   color: var(--color-accent-2);
-  margin: 0 0 4px;
+  margin: 0 0 10px;
   line-height: 1.5;
 }
 
-/* Texto solto na página — sem moldura, só alinhado com a imagem */
-.step-text {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding-right: 4px;
-}
-
-.content-pane .step-text p {
+.content-pane .card-text {
   font-size: 0.82rem;
   line-height: 1.65;
   margin: 0;
 }
 
-.step-text em {
+.card-text em {
   color: var(--color-accent-2);
   font-style: normal;
   font-size: 0.92em;
+}
+
+/* margin-top auto alinha o link no rodape de todos os cards da linha */
+.card-link {
+  align-self: flex-start;
+  margin-top: auto;
+  padding-top: 14px;
+  font-family: var(--font-alt);
+  font-size: 0.85rem;
+  color: var(--color-accent);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.15s, text-shadow 0.15s;
+}
+
+.card-link:hover {
+  border-bottom-color: var(--color-accent);
+  text-shadow: 0 0 8px rgba(var(--color-accent-rgb), 0.5);
 }
 
 .shot {
@@ -1322,22 +1324,13 @@ body.player-disabled .vinyl-btn { display: none; }
   box-shadow: 0 0 16px rgba(var(--color-accent-rgb), 0.18);
 }
 
-/* A imagem preenche a altura do bloco (flex: 1), mas o min-height
-   garante uma caixa não-zero — sem ele, imagens com loading="lazy"
+/* Altura fixa deixa os cards da mesma linha alinhados — e garante
+   uma caixa nao-zero, sem a qual imagens com loading="lazy"
    colapsam e nunca chegam a carregar */
-.shot { min-height: 240px; }
-
-/* Sem o teto, a imagem vertical puxaria o bloco para ~600px
-   (a altura natural dela na largura da coluna) */
-.shot-portrait { min-height: 360px; }
-
-.shot-portrait img { max-height: 360px; }
-
 .shot img {
   display: block;
   width: 100%;
-  flex: 1;
-  min-height: 190px;
+  height: 230px;
   object-fit: contain;
   object-position: center;
   border: 1px solid var(--color-accent-2);
@@ -1783,30 +1776,13 @@ body.player-disabled .vinyl-btn { display: none; }
 
   .indash-side { width: 100%; }
 
-  /* Telas em coluna única: cabeçalho, imagem e texto empilhados */
-  .step {
+  /* Cards das telas em coluna única */
+  .screen-cards {
     grid-template-columns: 1fr;
-    gap: 10px;
+    gap: 26px;
   }
 
-  .step-head,
-  .step .shot,
-  .step-text {
-    grid-column: 1;
-    grid-row: auto;
-  }
-
-  .step-text { padding-right: 0; }
-
-  .step-list { gap: 28px; }
-
-  /* Empilhado: a altura volta a ser fixa, sem esticar */
-  .shot,
-  .shot-portrait { min-height: 0; }
-
-  .shot img { flex: none; height: 190px; }
-
-  .shot-portrait img { height: 300px; }
+  .shot img { height: 200px; }
 
   /* Designs: empilha imagem sobre o texto no celular */
   .design-item,
