@@ -1250,55 +1250,92 @@ body.player-disabled .vinyl-btn { display: none; }
   transform: translateY(-2px);
 }
 
-/* ---------- Telas do projeto (grade 2 colunas) ---------- */
-.shot-list {
+/* ---------- Telas do projeto (cards) ---------- */
+.screen-cards {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 18px;
-  margin-top: 18px;
-  align-items: start;
+  gap: 30px 24px;
+  margin-top: 24px;
 }
 
-.shot {
-  margin: 0;
+/* A moldura envolve o card inteiro — imagem e texto.
+   Coluna flex para o "Visualizar" descer ao rodapé. */
+.screen-card {
   display: flex;
   flex-direction: column;
   background: var(--color-bg-raised);
   border: 1px solid rgba(var(--color-accent-2-rgb), 0.5);
-  padding: 10px;
+  padding: 12px 14px 16px;
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-.shot:hover {
+.screen-card:hover {
   border-color: var(--color-accent);
   box-shadow: 0 0 16px rgba(var(--color-accent-rgb), 0.18);
 }
 
-/* Altura fixa mantém a grade alinhada — e evita que imagens com
-   loading="lazy" colapsem antes de carregar */
-.shot img {
-  display: block;
-  width: 100%;
-  height: 210px;
-  object-fit: cover;
-  object-position: top;
-  border: 1px solid var(--color-accent-2);
-  background: var(--color-bg-sunken);
+.card-title {
+  font-family: var(--font-alt);
+  font-size: 1.15rem;
+  color: var(--color-accent);
+  margin: 14px 0 2px;
 }
 
-/* Telas verticais (login, Pix): imagem inteira, sem corte */
-.shot-portrait img {
-  object-fit: contain;
-  object-position: center;
-}
-
-.shot figcaption {
+.card-sub {
   font-family: var(--font-body);
   font-size: 0.72rem;
   color: var(--color-accent-2);
-  line-height: 1.55;
-  margin-top: 8px;
-  text-align: center;
+  margin: 0 0 10px;
+  line-height: 1.5;
+}
+
+.content-pane .card-text {
+  font-size: 0.82rem;
+  line-height: 1.65;
+  margin: 0;
+}
+
+.card-text em {
+  color: var(--color-accent-2);
+  font-style: normal;
+  font-size: 0.92em;
+}
+
+/* margin-top auto alinha o link no rodape de todos os cards da linha */
+.card-link {
+  align-self: flex-start;
+  margin-top: auto;
+  padding-top: 14px;
+  font-family: var(--font-alt);
+  font-size: 0.85rem;
+  color: var(--color-accent);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.15s, text-shadow 0.15s;
+}
+
+.card-link:hover {
+  border-bottom-color: var(--color-accent);
+  text-shadow: 0 0 8px rgba(var(--color-accent-rgb), 0.5);
+}
+
+/* A moldura agora é do card; a figura é só o invólucro da imagem */
+.shot {
+  margin: 0;
+  display: block;
+}
+
+/* Altura fixa deixa os cards da mesma linha alinhados — e garante
+   uma caixa nao-zero, sem a qual imagens com loading="lazy"
+   colapsam e nunca chegam a carregar */
+.shot img {
+  display: block;
+  width: 100%;
+  height: 230px;
+  object-fit: contain;
+  object-position: center;
+  border: 1px solid var(--color-accent-2);
+  background: var(--color-bg-sunken);
 }
 
 /* ---------- Designs (linhas intercaladas) ---------- */
@@ -1740,15 +1777,13 @@ body.player-disabled .vinyl-btn { display: none; }
 
   .indash-side { width: 100%; }
 
-  /* Telas em coluna única, sem corte */
-  .shot-list {
+  /* Cards das telas em coluna única */
+  .screen-cards {
     grid-template-columns: 1fr;
-    gap: 12px;
+    gap: 26px;
   }
 
-  .shot img { height: auto; object-fit: contain; }
-
-  .shot figcaption { font-size: 0.7rem; }
+  .shot img { height: 200px; }
 
   /* Designs: empilha imagem sobre o texto no celular */
   .design-item,
