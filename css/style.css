@@ -1267,14 +1267,10 @@ body.player-disabled .vinyl-btn { display: none; }
 }
 
 /* Ímpar: imagem à esquerda, cabeçalho + texto à direita */
-.step-head { grid-column: 2; grid-row: 1; }
-.step .shot { grid-column: 1; grid-row: 2; }
-.step-text { grid-column: 2; grid-row: 2; }
-
-/* Par: espelhado */
-.step:nth-of-type(even) .step-head { grid-column: 1; }
-.step:nth-of-type(even) .shot { grid-column: 2; }
-.step:nth-of-type(even) .step-text { grid-column: 1; }
+/* Texto sempre à esquerda, imagem à direita */
+.step-head { grid-column: 1; grid-row: 1; }
+.step-text { grid-column: 1; grid-row: 2; }
+.step .shot { grid-column: 2; grid-row: 2; }
 
 .step-title {
   font-family: var(--font-alt);
@@ -1291,13 +1287,12 @@ body.player-disabled .vinyl-btn { display: none; }
   line-height: 1.5;
 }
 
+/* Texto solto na página — sem moldura, só alinhado com a imagem */
 .step-text {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background: var(--color-bg-raised);
-  border: 1px solid rgba(var(--color-accent-2-rgb), 0.5);
-  padding: 14px 16px;
+  padding-right: 4px;
 }
 
 .content-pane .step-text p {
@@ -1789,21 +1784,19 @@ body.player-disabled .vinyl-btn { display: none; }
   .indash-side { width: 100%; }
 
   /* Telas em coluna única: cabeçalho, imagem e texto empilhados */
-  .step,
-  .step:nth-of-type(even) {
+  .step {
     grid-template-columns: 1fr;
     gap: 10px;
   }
 
   .step-head,
   .step .shot,
-  .step-text,
-  .step:nth-of-type(even) .step-head,
-  .step:nth-of-type(even) .shot,
-  .step:nth-of-type(even) .step-text {
+  .step-text {
     grid-column: 1;
     grid-row: auto;
   }
+
+  .step-text { padding-right: 0; }
 
   .step-list { gap: 28px; }
 
