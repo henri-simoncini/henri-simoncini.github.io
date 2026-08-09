@@ -505,7 +505,7 @@
   const lbCaptionToggle = document.getElementById('lb-caption-toggle');
   // Cada grupo (galeria de fotos, telas do inDash...) navega separado:
   // a lista é montada a partir do container da figura clicada.
-  const LB_GROUPS = '.gallery, .shot-list';
+  const LB_GROUPS = '.gallery, .step-list';
   const LB_ITEMS = '.g-item, .shot';
 
   let galleryData = [];
@@ -514,11 +514,16 @@
   function collectGroup(fig) {
     const container = fig.closest(LB_GROUPS) || document;
     const figures = [...container.querySelectorAll(LB_ITEMS)];
-    galleryData = figures.map((f) => ({
-      src: f.querySelector('img').getAttribute('src'),
-      alt: f.querySelector('img').getAttribute('alt') || '',
-      caption: (f.querySelector('figcaption') || {}).textContent.trim() || '',
-    }));
+    galleryData = figures.map((f) => {
+      const img = f.querySelector('img');
+      const cap = f.querySelector('figcaption');
+      // Sem figcaption (telas do inDash), a legenda vem do alt da imagem
+      return {
+        src: img.getAttribute('src'),
+        alt: img.getAttribute('alt') || '',
+        caption: (cap ? cap.textContent.trim() : '') || img.getAttribute('alt') || '',
+      };
+    });
     return figures.indexOf(fig);
   }
 

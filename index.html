@@ -428,60 +428,164 @@
             <h2 class="fv-subtitle">Por dentro do projeto</h2>
             <p>As telas do inDash, do login ao recebimento — tudo rodando no navegador, sem instalar nada.</p>
 
-            <div class="shot-list">
-              <figure class="shot shot-portrait">
-                <img src="assets/indash/login.jpg" alt="Tela de login do inDash com entrada por e-mail ou Google"
-                  loading="lazy">
-                <figcaption>Login — entrada por e-mail e senha ou direto pela conta Google.</figcaption>
-              </figure>
-              <figure class="shot">
-                <img src="assets/indash/dashboard.jpg" alt="Tela inicial do inDash com resumo financeiro e projetos"
-                  loading="lazy">
-                <figcaption>Dashboard inicial — o resumo do mês em quatro números e o gráfico de ganhos.</figcaption>
-              </figure>
-              <figure class="shot">
-                <img src="assets/indash/agenda.jpg" alt="Agenda mensal do inDash com compromissos marcados"
-                  loading="lazy">
-                <figcaption>Agenda — projetos e prazos num calendário único, mês a mês.</figcaption>
-              </figure>
-              <figure class="shot">
-                <img src="assets/indash/projetos.jpg" alt="Mural de projetos do inDash agrupados por serviço"
-                  loading="lazy">
-                <figcaption>Projetos — do agendamento à entrega, com valor, checklist e prazo (atrasos em vermelho).
-                </figcaption>
-              </figure>
-              <figure class="shot">
-                <img src="assets/indash/financeiro.jpg" alt="Tela financeira do inDash com ganhos por período"
-                  loading="lazy">
-                <figcaption>Financeiro — recebido, a receber e o histórico por dia, semana, mês ou ano.</figcaption>
-              </figure>
-              <figure class="shot">
-                <img src="assets/indash/clientes.jpg" alt="Lista de clientes cadastrados no inDash" loading="lazy">
-                <figcaption>Clientes — quem contrata os serviços, com busca e arquivamento. (Contatos borrados por
-                  privacidade.)</figcaption>
-              </figure>
-              <figure class="shot">
-                <img src="assets/indash/servicos.jpg" alt="Catálogo de serviços do inDash com preços base"
-                  loading="lazy">
-                <figcaption>Serviços — o catálogo do que você oferece e o preço base de cada item.</figcaption>
-              </figure>
-              <figure class="shot">
-                <img src="assets/indash/estatisticas.jpg" alt="Estatísticas do inDash com desempenho em números"
-                  loading="lazy">
-                <figcaption>Estatísticas — desempenho em dinheiro, entregas no prazo e serviços que mais saem.
-                </figcaption>
-              </figure>
-              <figure class="shot">
-                <img src="assets/indash/configuracoes.jpg"
-                  alt="Tela de configurações do inDash com opções de tema e fonte" loading="lazy">
-                <figcaption>Configurações — tema, tamanho e estilo da fonte, alto contraste e notificações.
-                </figcaption>
-              </figure>
-              <figure class="shot shot-portrait">
-                <img src="assets/indash/pix.jpg" alt="Modal de cobrança via Pix do inDash com QR Code" loading="lazy">
-                <figcaption>Cobrança via Pix — QR Code com o valor já preenchido. (Dados de pagamento borrados.)
-                </figcaption>
-              </figure>
+            <div class="step-list">
+
+              <section class="step">
+                <header class="step-head">
+                  <h3 class="step-title">Login e Cadastro</h3>
+                  <p class="step-sub">Entrada por e-mail e senha ou direto pela conta Google.</p>
+                </header>
+                <figure class="shot shot-portrait">
+                  <img src="assets/indash/login.jpg" alt="Tela de login do inDash com entrada por e-mail ou Google"
+                    loading="lazy">
+                </figure>
+                <div class="step-text">
+                  <p>A autenticação é feita pelo Supabase Auth, com sessão guardada no navegador. As páginas do painel
+                    ficam protegidas: quem não está logado é levado de volta para esta tela.</p>
+                </div>
+              </section>
+
+              <section class="step">
+                <header class="step-head">
+                  <h3 class="step-title">Dashboard Inicial</h3>
+                  <p class="step-sub">O resumo do mês em quatro números e o gráfico de ganhos.</p>
+                </header>
+                <figure class="shot">
+                  <img src="assets/indash/dashboard.jpg" alt="Tela inicial do inDash com resumo financeiro e projetos"
+                    loading="lazy">
+                </figure>
+                <div class="step-text">
+                  <p>A tela busca quatro totais de uma vez — recebido no mês, a receber, projetos em andamento e
+                    entregas concluídas — e monta o gráfico dos últimos seis meses. Tudo sai de consultas ao banco, então
+                    os números acompanham sozinhos o andamento dos projetos.</p>
+                </div>
+              </section>
+
+              <section class="step">
+                <header class="step-head">
+                  <h3 class="step-title">Agenda</h3>
+                  <p class="step-sub">Projetos e prazos num calendário único, mês a mês.</p>
+                </header>
+                <figure class="shot">
+                  <img src="assets/indash/agenda.jpg" alt="Agenda mensal do inDash com compromissos marcados"
+                    loading="lazy">
+                </figure>
+                <div class="step-text">
+                  <p>A grade do mês é gerada a partir do primeiro dia, encaixando os dias da semana na posição certa.
+                    Cada projeto agendado aparece no dia correspondente com horário e nome do cliente, e a navegação
+                    entre meses recarrega só os dados do período.</p>
+                </div>
+              </section>
+
+              <section class="step">
+                <header class="step-head">
+                  <h3 class="step-title">Projetos</h3>
+                  <p class="step-sub">Do agendamento à entrega, agrupados por serviço.</p>
+                </header>
+                <figure class="shot">
+                  <img src="assets/indash/projetos.jpg" alt="Mural de projetos do inDash agrupados por serviço"
+                    loading="lazy">
+                </figure>
+                <div class="step-text">
+                  <p>Cada cartão carrega valor, checklist de entregas e prazo. A comparação com a data de hoje acontece
+                    na hora de exibir, então um prazo vencido aparece em vermelho sem depender de ninguém marcar nada.
+                  </p>
+                </div>
+              </section>
+
+              <section class="step">
+                <header class="step-head">
+                  <h3 class="step-title">Financeiro</h3>
+                  <p class="step-sub">Seus ganhos, período a período.</p>
+                </header>
+                <figure class="shot">
+                  <img src="assets/indash/financeiro.jpg" alt="Tela financeira do inDash com ganhos por período"
+                    loading="lazy">
+                </figure>
+                <div class="step-text">
+                  <p>Separa o que já entrou do que ainda está pendente e deixa trocar a escala do gráfico entre dia,
+                    semana, mês e ano. Só pagamentos confirmados entram na conta — assim o número reflete o que
+                    realmente caiu.</p>
+                </div>
+              </section>
+
+              <section class="step">
+                <header class="step-head">
+                  <h3 class="step-title">Clientes</h3>
+                  <p class="step-sub">Quem contrata os serviços, com busca e arquivamento.</p>
+                </header>
+                <figure class="shot">
+                  <img src="assets/indash/clientes.jpg" alt="Lista de clientes cadastrados no inDash" loading="lazy">
+                </figure>
+                <div class="step-text">
+                  <p>Busca por nome ou e-mail e opção de arquivar quem não está mais ativo, sem apagar o histórico dos
+                    projetos ligados àquele cliente. <em>Contatos borrados aqui por privacidade — são clientes
+                      reais.</em></p>
+                </div>
+              </section>
+
+              <section class="step">
+                <header class="step-head">
+                  <h3 class="step-title">Serviços</h3>
+                  <p class="step-sub">O que você oferece e o preço base de cada item.</p>
+                </header>
+                <figure class="shot">
+                  <img src="assets/indash/servicos.jpg" alt="Catálogo de serviços do inDash com preços base"
+                    loading="lazy">
+                </figure>
+                <div class="step-text">
+                  <p>O catálogo alimenta a criação de projetos: ao escolher um serviço, o valor base já vem preenchido e
+                    pode ser ajustado caso a caso. É o que evita recalcular preço do zero a cada novo trabalho.</p>
+                </div>
+              </section>
+
+              <section class="step">
+                <header class="step-head">
+                  <h3 class="step-title">Estatísticas</h3>
+                  <p class="step-sub">Como o seu trabalho vem rendendo, em números.</p>
+                </header>
+                <figure class="shot">
+                  <img src="assets/indash/estatisticas.jpg" alt="Estatísticas do inDash com desempenho em números"
+                    loading="lazy">
+                </figure>
+                <div class="step-text">
+                  <p>Reúne desempenho em dinheiro, projetos por status, entrega no prazo e quais serviços mais saem.
+                    Usa a mesma base do dashboard, agregada em recortes diferentes para responder outras perguntas.</p>
+                </div>
+              </section>
+
+              <section class="step">
+                <header class="step-head">
+                  <h3 class="step-title">Configurações</h3>
+                  <p class="step-sub">Deixe o inDash com a sua cara.</p>
+                </header>
+                <figure class="shot">
+                  <img src="assets/indash/configuracoes.jpg"
+                    alt="Tela de configurações do inDash com opções de tema e fonte" loading="lazy">
+                </figure>
+                <div class="step-text">
+                  <p>Tema claro ou escuro, três tamanhos e três estilos de fonte, alto contraste e preferências de
+                    notificação. As escolhas ficam salvas na conta, então acompanham o usuário em qualquer dispositivo.
+                  </p>
+                </div>
+              </section>
+
+              <section class="step">
+                <header class="step-head">
+                  <h3 class="step-title">Cobrança via Pix</h3>
+                  <p class="step-sub">O cliente escaneia e o valor já vai preenchido.</p>
+                </header>
+                <figure class="shot shot-portrait">
+                  <img src="assets/indash/pix.jpg" alt="Modal de cobrança via Pix do inDash com QR Code" loading="lazy">
+                </figure>
+                <div class="step-text">
+                  <p>Monta o código Pix no padrão do Banco Central com o valor do projeto e o transforma em QR Code, com
+                    a opção copia e cola ao lado. Como o banco não avisa o sistema quando o dinheiro cai, a confirmação
+                    é manual — e só então o valor entra nas estatísticas. <em>Dados de pagamento borrados por
+                      segurança.</em></p>
+                </div>
+              </section>
+
             </div>
           </article>
 
